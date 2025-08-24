@@ -1,3 +1,4 @@
+/* Blog Page Container */
 .blog-page {
   max-width: 1000px;
   margin: 2rem auto;
@@ -27,6 +28,7 @@
 
 .blog-card {
   display: flex;
+  flex-direction: row; /* Default: image left, text right */
   gap: 1rem;
   background-color: #fff;
   border-radius: 12px;
@@ -45,6 +47,7 @@
   height: 100px;
   object-fit: cover;
   border-radius: 8px;
+  flex-shrink: 0;
 }
 
 .blog-info h3 {
@@ -80,4 +83,28 @@
 
 .read-more:hover {
   color: #1d6fa5;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .blog-card {
+    flex-direction: column; /* Stack image on top of text */
+    align-items: center; /* Center content */
+    text-align: center;
+  }
+
+  .blog-thumb {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    max-height: 200px;
+    margin-bottom: 1rem;
+  }
+
+  .blog-info {
+    width: 100%;
+  }
+
+  .blog-info h3 {
+    font-size: 1.5rem;
+  }
 }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./Contact.css";
+import { sendContactMessage } from "../../../api";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -15,7 +16,7 @@ export default function Contact() {
     setFormData({...formData, [e.target.name]: e.target.value});
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Basic validation
@@ -33,13 +34,21 @@ export default function Contact() {
     }
 
     setError("");
-    setSuccess(true);
 
-    // Reset form
-    setFormData({ name: "", email: "", subject: "", message: "" });
-
-    // TODO: Connect with email API (EmailJS or backend)
-    console.log("Form submitted:", formData);
+    try {
+      const response = await sendContactMessage(formData);
+      if(response.success) {
+        setSuccess(true)
+        setFormData({name: "", email: "", subject: "", message: ""})
+      } else {
+        setError("Failed to send message. Please try againg later.")
+        setSuccess(false);
+      }
+    } catch (error) {
+      console.error(error)
+      setError("An error occured while sending the message.")
+      setSuccess(false)
+    }
   };
 
   return (
@@ -54,8 +63,11 @@ export default function Contact() {
       
 
       {error && <p className="error-msg">{error}</p>}
-      {success && <p className="success-msg">Your message has been sent successfully!</p>}
-
+      {success && (
+  <p className="success-msg" style={{ color: "#16a34a" }}>
+    Your message has been sent successfully!
+  </p>
+)}
       <form className="contact-form" onSubmit={handleSubmit}>
         <label>
           Name

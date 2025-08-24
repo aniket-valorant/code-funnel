@@ -6,6 +6,11 @@ export const api = axios.create({
   timeout: 10000,
 });
 
+export async function sendContactMessage(formData) {
+  const { data } = await api.post("/contact", formData);
+  return data;
+}
+
 export async function getCodeMeta(slug) {
   const { data } = await api.get(`/codes/${slug}`);
   return data;
