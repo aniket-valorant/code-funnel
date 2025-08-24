@@ -1,77 +1,40 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import LandingPage from "./pages/LandingPage.jsx";
-import WaitPage from "./pages/WaitPage.jsx";
-import FinalPage from "./pages/FinalPage.jsx";
-import NotFound from "./pages/NotFound.jsx";
-
-import AdminLogin from "./pages/admin/AdminLogin.jsx";
-import AdminDashboard from "./pages/admin/AdminDahboard.jsx";
-import AddCode from "./pages/admin/AddCode.jsx";
-import EditCode from "./pages/admin/EditCode.jsx";
-import AdminNavbar from "./components/AdminNavbar.jsx";
-
-
-import "./styles.css";
-import './pages/admin/admin.css'
-
-function ProtectedRoute({ children }) {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    return <Navigate to="/admin/login" replace />;
-  }
-  return (
-    <div className="admin-container">
-      <AdminNavbar />
-      <div className="admin-content">{children}</div>
-    </div>
-  );
-}
+import ArticlePage1 from "./pages/code-funnel/ArticlePage1.jsx";
+import Page2 from "./pages/code-funnel/Page2.jsx";
+import Page3 from "./pages/code-funnel/Page3.jsx";
+import ScrollToTop from "./components/ScrollToTop.js";
+import Navbar from "./components/navbar/Navbar.jsx";
+import Footer from "./components/footer/Footer.jsx";
+import Home from "./pages/web/home/Home.jsx";
+import Blog from "./pages/web/blog/Blog.jsx";
+import Post from "./pages/web/post/Post.jsx";
+import About from "./pages/web/about/About.jsx";
+import Contact from "./pages/web/contact/Contact.jsx";
+import Privacy from "./pages/web/privacy/Privacy.jsx";
+import Terms from "./pages/web/terms/Terms.jsx";
+import PostPage from "./components/postPage/PostPage.jsx";
 
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
+      <Navbar />
       <div className="container">
         <Routes>
-          {/* canonical flow */}
-          <Route path="/c/:slug" element={<LandingPage />} />
-          <Route path="/c/:slug/wait" element={<WaitPage />} />
-          <Route path="/c/:slug/final" element={<FinalPage />} />
-
-          <Route path="/" element={<Navigate to="/c/demo" replace />} />
-
-
-          {/* admin panel */}
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route
-            path="/admin/dashboard"
-            element={
-              <ProtectedRoute>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/add"
-            element={
-              <ProtectedRoute>
-                <AddCode />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/edit/:slug"
-            element={
-              <ProtectedRoute>
-                <EditCode />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* convenience: redirect root */}
-
-          <Route path="*" element={<NotFound />} />
+           <Route path="/" element={<Home />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:id" element={<Post />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/post/:id" element={<PostPage />} />
+          <Route path="/a/:slug/1" element={<ArticlePage1 />} />
+          <Route path="/a/:slug/2" element={<Page2 />} />
+          <Route path="/a/:slug/final" element={<Page3 />} />
         </Routes>
       </div>
+      <Footer />
     </BrowserRouter>
   );
 }

@@ -1,0 +1,83 @@
+.blog-page {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.blog-page h1 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.blog-page p {
+  text-align: center;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+/* Blog List Cards */
+.blog-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.blog-card {
+  display: flex;
+  gap: 1rem;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.blog-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+.blog-thumb {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.blog-info h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #222;
+}
+
+.blog-info h3 a {
+  text-decoration: none;
+  color: #222;
+}
+
+.blog-info h3 a:hover {
+  color: #3498db;
+}
+
+.blog-meta {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.blog-info p {
+  margin: 0.5rem 0;
+  color: #555;
+}
+
+.read-more {
+  font-weight: 600;
+  color: #3498db;
+  text-decoration: none;
+}
+
+.read-more:hover {
+  color: #1d6fa5;
+}

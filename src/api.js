@@ -7,7 +7,6 @@ export const api = axios.create({
 });
 
 export async function getCodeMeta(slug) {
-  console.log(slug)
   const { data } = await api.get(`/codes/${slug}`);
   return data;
 }
