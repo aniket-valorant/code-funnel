@@ -8,7 +8,7 @@ export default function Page2() {
   const navigate = useNavigate();
 
   const [started, setStarted] = useState(false);
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(10);
   const [continueClicks, setContinueClicks] = useState(0);
   const [showContinue, setShowContinue] = useState(false);
 
@@ -91,7 +91,7 @@ export default function Page2() {
               <div
                 className="progress-bar"
                 style={{
-                  width: `${Math.round(((5 - countdown) / 5) * 100)}%`,
+                  width: `${Math.round(((10 - countdown) / 10) * 100)}%`,
                 }}
               />
             </div>

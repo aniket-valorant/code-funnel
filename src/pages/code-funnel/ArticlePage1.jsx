@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./Styles/ArticlePage1.css";
 import AdSlot from "../../components/adslot/AdSlot";
+import PopunderAd from "../../components/adSlot/PopunderAd";
 
 export default function ArticlePage1() {
   const { slug } = useParams();
@@ -9,7 +10,7 @@ export default function ArticlePage1() {
 
   // Verification states
   const [started, setStarted] = useState(false);
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(10);
   const [continueClicks, setContinueClicks] = useState(0);
   const [showContinue, setShowContinue] = useState(false);
 
@@ -30,16 +31,6 @@ export default function ArticlePage1() {
     if (countdown === 0 && started) setShowContinue(true);
   }, [countdown, started]);
 
-  // Continue button logic
-  const handleContinue = () => {
-    if (continueClicks === 0) {
-      window._pu?.show?.();
-      setContinueClicks(1);
-      return;
-    }
-    navigate(`/a/${slug}/verify`);
-  };
-
   // Queue system for ads
   const enqueueAd = (loadFn) => {
     adQueueRef.current.push(loadFn);
@@ -57,6 +48,7 @@ export default function ArticlePage1() {
   // Your ad keys
   const bannerKey = "c2b2533e7be1f40efc683cff33e98ae7"; // 300x50
   const inlineKey = "f0fb375a70e618a337898e0611ab95dd"; // 300x250
+  const popunderScript = "//pl27499555.profitableratecpm.com/60/64/83/60648330d5724422f8d3884cae900cd4.js";
 
   return (
     <div className="article-page">
@@ -101,7 +93,7 @@ export default function ArticlePage1() {
               <div
                 className="progress-bar"
                 style={{
-                  width: `${Math.round(((5 - countdown) / 5) * 100)}%`,
+                  width: `${Math.round(((10 - countdown) / 10) * 100)}%`,
                 }}
               />
             </div>
@@ -223,16 +215,13 @@ export default function ArticlePage1() {
 
           {/* Continue button */}
           {showContinue && (
-            <section>
-              <p><b>Press Countinue button to preceed</b></p>
-              {continueClicks === 0 ? (
-                <button onClick={handleContinue}>Continue</button>
-              ) : (
-                <div>
-                  <div></div>
-                  <button onClick={handleContinue}>Continue</button>
-                </div>
-              )}
+            <section className="continue-section">
+              <p><b>Press Continue button to proceed</b></p>
+              <PopunderAd
+                scriptSrc={popunderScript}
+                onTrigger={() => navigate(`/a/${slug}/verify`)}
+                buttonText="Continue"
+              />
             </section>
           )}
           <h2>Velas, Maharashtra</h2>
