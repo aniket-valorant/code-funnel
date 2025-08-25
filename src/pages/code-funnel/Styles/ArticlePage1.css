@@ -1,7 +1,8 @@
 /* Styles/ArticlePage1.css */
 
-/* Global resets */
-body, html {
+/* Scoped to article-page */
+.article-page body,
+.article-page html {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -16,7 +17,7 @@ body, html {
 }
 
 /* Container for content */
-.container {
+.article-page .container {
   width: 100%;
   max-width: 360px; /* slightly larger than ad width */
   padding: 10px;
@@ -24,31 +25,31 @@ body, html {
 }
 
 /* Post content */
-.post {
+.article-page .post {
   width: 100%;
 }
 
-.title {
+.article-page .title {
   font-size: 1.6rem;
   margin-bottom: 0.3rem;
   font-weight: bold;
 }
 
-.meta {
+.article-page .meta {
   font-size: 0.85rem;
   color: #555;
   margin-bottom: 15px;
 }
 
 /* Paragraphs */
-.post p {
+.article-page .post p {
   line-height: 1.5rem;
   margin-bottom: 15px;
   font-size: 0.95rem;
 }
 
 /* Headings */
-.post h2 {
+.article-page .post h2 {
   font-size: 1.2rem;
   margin-top: 20px;
   margin-bottom: 8px;
@@ -56,7 +57,7 @@ body, html {
 }
 
 /* Verification box */
-.verify-box {
+.article-page .verify-box {
   background: #fff8e1;
   border: 1px solid #ffd54f;
   padding: 10px;
@@ -65,11 +66,11 @@ body, html {
   text-align: center;
 }
 
-.verify-box p {
+.article-page .verify-box p {
   margin: 5px 0;
 }
 
-.progress-bar {
+.article-page .progress-bar {
   height: 6px;
   background-color: #4caf50;
   border-radius: 3px;
@@ -77,7 +78,7 @@ body, html {
   transition: width 0.5s ease;
 }
 
-.btn {
+.article-page .btn {
   display: inline-block;
   padding: 8px 15px;
   margin-top: 8px;
@@ -87,44 +88,44 @@ body, html {
   font-size: 0.9rem;
 }
 
-.btn-dark {
+.article-page .btn-dark {
   background-color: #333;
   color: #fff;
 }
 
-.btn-primary {
+.article-page .btn-primary {
   background-color: #1976d2;
   color: #fff;
 }
 
-.btn-success {
+.article-page .btn-success {
   background-color: #388e3c;
   color: #fff;
 }
 
 /* Continue button section */
-.verify section {
+.article-page .verify section {
   margin-top: 15px;
   text-align: center;
 }
 
-.continue-real .hint {
+.article-page .continue-real .hint {
   font-size: 0.85rem;
   color: #555;
   margin-bottom: 5px;
 }
 
 /* Ads */
-.ad-label {
+.article-page .ad-label {
   font-size: 0.75rem;
   color: #888;
   margin-bottom: 5px;
   text-align: center;
 }
 
-.ad-in-article,
-header > div,
-.sticky {
+.article-page .ad-in-article,
+.article-page header > div,
+.article-page .sticky {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -132,43 +133,43 @@ header > div,
 }
 
 /* Ad container ensures min-height and proper layout */
-.ad-in-article,
-#ad-top-banner,
-#ad-sticky-bottom {
+.article-page .ad-in-article,
+.article-page #ad-top-banner,
+.article-page #ad-sticky-bottom {
   max-width: 300px; /* mobile-friendly width */
   width: 100%;
-  background-color: #000; /* placeholder if ad fails */
+  /* background-color: #000; placeholder if ad fails */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 /* Heights for banners and inline ads */
-#ad-top-banner,
-#ad-sticky-bottom {
+.article-page #ad-top-banner,
+.article-page #ad-sticky-bottom {
   min-height: 50px; /* top/bottom banner height */
 }
 
-#ad-in-article-1,
-#ad-in-article-2,
-#ad-in-article-3 {
+.article-page #ad-in-article-1,
+.article-page #ad-in-article-2,
+.article-page #ad-in-article-3 {
   min-height: 250px; /* inline ad height */
 }
 
 /* Sticky bottom banner */
-.sticky {
+.article-page .sticky {
   position: sticky;
   bottom: 0;
   left: 0;
   background: #fff;
   padding: 5px 0;
-  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+  /* box-shadow: 0 -2px 5px rgba(0,0,0,0.1); */
   z-index: 1000;
 }
 
 /* Responsive adjustments */
 @media (min-width: 400px) {
-  .container {
+  .article-page .container {
     max-width: 360px;
   }
 }
