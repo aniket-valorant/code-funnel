@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./Styles/ArticlePage1.css";
 import AdSlot from "../../components/adslot/AdSlot";
-import PopunderAd from "../../components/adSlot/PopunderAd";
+import PopunderAd from "../../components/popunderAd/PopunderAd";
 
 export default function ArticlePage1() {
   const { slug } = useParams();
