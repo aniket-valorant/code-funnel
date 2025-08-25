@@ -45,6 +45,17 @@ const Page2 = () => {
     navigate(`/a/${slug}/final`);
   };
 
+  useEffect(() => {
+    const meta = document.createElement("meta");
+    meta.name = "robots";
+    meta.content = "noindex, nofollow";
+    document.head.appendChild(meta);
+
+    return () => {
+      document.head.removeChild(meta);
+    };
+  }, []);
+
   return (
     <div className="article-page">
       {/* Header Ad */}

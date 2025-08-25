@@ -147,3 +147,10 @@
   color: #374151;
   margin-bottom: 0.5rem;
 }
+
+.ad-box iframe {
+  display: block;
+  margin: auto;
+  max-width: 100%;
+  min-width: 250px; /* prevents shrinking too much */
+}

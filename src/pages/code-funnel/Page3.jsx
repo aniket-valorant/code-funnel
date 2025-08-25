@@ -85,6 +85,17 @@ const Page3 = () => {
     }
   };
 
+  useEffect(() => {
+    const meta = document.createElement("meta");
+    meta.name = "robots";
+    meta.content = "noindex, nofollow";
+    document.head.appendChild(meta);
+
+    return () => {
+      document.head.removeChild(meta);
+    };
+  }, []);
+
   return (
     <div className="final-page">
       {/* Header Ad */}

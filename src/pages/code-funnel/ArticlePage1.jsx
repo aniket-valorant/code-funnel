@@ -13,10 +13,10 @@ export default function ArticlePage1() {
   const [showContinue, setShowContinue] = useState(false);
   // OPTIONAL: hook your ad network’s click/open here
   const openAdPopup = () => {
-    // Example placeholders:
-    // window._pu && window._pu.show();
-    window.open("about:blank", "_blank", "noopener");
-  };
+  if (window._pu) {
+    window._pu.show();
+  }
+};
 
   // start verification
   const handleStart = () => {
@@ -48,6 +48,57 @@ export default function ArticlePage1() {
     // real continue: go to Page 2
     navigate(`/a/${slug}/2`); // or navigate(`/a/${slug}/2`) if you build that route next
   };
+ 
+   // ✅ Inject Adsterra scripts on mount
+  
+useEffect(() => {
+    // In-Article Ad (300x250)
+    const script1 = document.createElement("script");
+    script1.innerHTML = `
+      atOptions = {
+        'key' : 'f0fb375a70e618a337898e0611ab95dd',
+        'format' : 'iframe',
+        'height' : 250,
+        'width' : 300,
+        'params' : {}
+      };
+    `;
+    const src1 = document.createElement("script");
+    src1.src = "//www.highperformanceformat.com/f0fb375a70e618a337898e0611ab95dd/invoke.js";
+
+    document.getElementById("ad-in-article-1")?.appendChild(script1);
+    document.getElementById("ad-in-article-1")?.appendChild(src1);
+
+    // Sticky Banner (320x50)
+    const script2 = document.createElement("script");
+    script2.innerHTML = `
+      atOptions = {
+        'key' : 'c2b2533e7be1f40efc683cff33e98ae7',
+        'format' : 'iframe',
+        'height' : 50,
+        'width' : 320,
+        'params' : {}
+      };
+    `;
+    const src2 = document.createElement("script");
+    src2.src = "//www.highperformanceformat.com/c2b2533e7be1f40efc683cff33e98ae7/invoke.js";
+
+    document.getElementById("ad-sticky-bottom")?.appendChild(script2);
+    document.getElementById("ad-sticky-bottom")?.appendChild(src2);
+
+    // Popunder / JS ad
+    const popunder = document.createElement("script");
+    popunder.src = "//pl27499555.profitableratecpm.com/60/64/83/60648330d5724422f8d3884cae900cd4.js";
+    document.body.appendChild(popunder);
+
+    return () => {
+      script1.remove();
+      src1.remove();
+      script2.remove();
+      src2.remove();
+      popunder.remove();
+    };
+  }, []);
 
   return (
     <div className="article-page">
@@ -100,9 +151,7 @@ export default function ArticlePage1() {
           {/* In-article ad #1 */}
           <div className="ad-in-article">
             <div className="ad-label">Advertisement</div>
-            <div id="ad-in-article-1" className="ad-box h-250">
-              <span>In-Article Ad</span>
-            </div>
+            <div id="ad-in-article-1" className="ad-box h-250"/>
           </div>
 
           <p>
@@ -184,7 +233,6 @@ export default function ArticlePage1() {
       <div className="sticky">
         <div className="ad-label">Advertisement</div>
         <div id="ad-sticky-bottom" className="ad-box h-60">
-          <span>Sticky Bottom Banner</span>
         </div>
       </div>
     </div>
