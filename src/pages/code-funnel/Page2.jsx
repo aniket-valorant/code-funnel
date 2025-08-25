@@ -1,174 +1,210 @@
-import React, { useEffect, useState } from "react";
-import "./Styles/Page2.css";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import "./Styles/ArticlePage1.css"; // reuse same styles
+import AdSlot from "../../components/adslot/AdSlot";
 
-const Page2 = () => {
-    const [started, setStarted] = useState(false);
-  const [countdown, setCountdown] = useState(10);
-  const [continueClicks, setContinueClicks] = useState(0);
-  const [showContinue, setShowContinue] = useState(false);
-  const { slug } = useParams(); 
+export default function Page2() {
+  const { slug } = useParams();
   const navigate = useNavigate();
 
-  const openAdPopup = () => {
-    window.open("about:blank", "_blank", "noopener");
-  };
+  const [started, setStarted] = useState(false);
+  const [countdown, setCountdown] = useState(5);
+  const [continueClicks, setContinueClicks] = useState(0);
+  const [showContinue, setShowContinue] = useState(false);
 
-  // start countdown
-  const handleStart = () => {
-    if (!started) setStarted(true);
-  };
+  const adQueueRef = useRef([]);
 
-   // countdown logic
+  const handleStart = () => !started && setStarted(true);
+
   useEffect(() => {
     if (!started || countdown <= 0) return;
     const t = setTimeout(() => setCountdown((c) => c - 1), 1000);
     return () => clearTimeout(t);
   }, [started, countdown]);
 
-  // show continue button after verification
   useEffect(() => {
-    if (countdown === 0 && started) {
-      setShowContinue(true);
-    }
+    if (countdown === 0 && started) setShowContinue(true);
   }, [countdown, started]);
 
-  
-  // continue button logic
   const handleContinue = () => {
     if (continueClicks === 0) {
-      openAdPopup(); // fake click
+      window._pu?.show?.();
       setContinueClicks(1);
       return;
     }
-    // real navigation
     navigate(`/a/${slug}/complete`);
   };
 
-  useEffect(() => {
-    const meta = document.createElement("meta");
-    meta.name = "robots";
-    meta.content = "noindex, nofollow";
-    document.head.appendChild(meta);
+  const enqueueAd = (loadFn) => {
+    adQueueRef.current.push(loadFn);
+  };
 
-    return () => {
-      document.head.removeChild(meta);
+  useEffect(() => {
+    const runQueue = async () => {
+      for (const loadAdFn of adQueueRef.current) {
+        await loadAdFn();
+      }
     };
+    runQueue();
   }, []);
+
+  const bannerKey = "c2b2533e7be1f40efc683cff33e98ae7";
+  const inlineKey = "f0fb375a70e618a337898e0611ab95dd";
 
   return (
     <div className="article-page">
-      {/* Header Ad */}
-      <div className="ad-header">
-        <span className="ad-label">Advertisement</span>
-        <div className="ad-box">728x90 Banner Ad</div>
-      </div>
+      {/* Top banner */}
+      <header className="container">
+        <AdSlot
+          id="ad-top-banner"
+          keyId={bannerKey}
+          width={320}
+          height={50}
+          onLoad={enqueueAd}
+        />
+      </header>
 
-      {/* Article */}
-      <div className="content">
-        <h1 className="title">Top 5 Street Foods in Mumbai 🍲</h1>
-        <p className="subtitle">
-          Discover mouth-watering street food that makes Mumbai famous.
-        </p>
+      <main className="container">
+        <article className="post">
+          <h1 className="title">10 Amazing Hill Stations in India 🏞️</h1>
+          <p className="meta">12 min read · Curated by TravelExplorer</p>
 
-          {/* === VERIFICATION START (TOP) === */}
-        {!started ? (
-          <div className="verify-box">
-            <p className="verify-text">
-              Start a quick <b>10s verification</b> to continue.
-            </p>
-            <button className="btn-dark" onClick={handleStart}>
-              Start Verification
-            </button>
-          </div>
-        ) : countdown > 0 ? (
-          <div className="verify-box">
-            <p className="verify-text">
-              Verifying… <b>{countdown}s</b> remaining
-            </p>
-            <div className="progress">
+          <p>
+            Escape the city heat and explore India’s most serene hill stations.
+            From misty valleys to scenic viewpoints, these locations promise
+            tranquility and adventure for every traveler.
+          </p>
+
+          {/* Verification */}
+          {!started ? (
+            <div className="verify-box">
+              <p>
+                Want {slug} code?  start last quick verification to unlock.
+              </p>
+              <button onClick={handleStart}>Start Verification</button>
+            </div>
+          ) : countdown > 0 ? (
+            <div className="verify-box">
+              <p>
+                Verifying your access… <b>{countdown}s</b>{" "}remaining
+              </p>
               <div
                 className="progress-bar"
                 style={{
-                  width: `${Math.round(((10 - countdown) / 10) * 100)}%`,
+                  width: `${Math.round(((5 - countdown) / 5) * 100)}%`,
                 }}
               />
             </div>
-          </div>
-        ) : (
-          <div className="verify-box">
-            <p className="verify-text success">Verification complete ✅</p>
-            <p className="scroll-hint">Scroll down to continue...</p>
-          </div>
-        )}
+          ) : (
+            <div className="verify-box">
+              <p>To get <b>{slug}</b> code, scroll down to the Continue button</p><b>Final Step</b>
+            </div>
+          )}
 
+          {/* Inline Ad */}
+          <AdSlot
+            id="ad-in-article-1"
+            keyId={inlineKey}
+            width={300}
+            height={250}
+            onLoad={enqueueAd}
+          />
 
-        <p>
-          1️⃣ <span className="bold">Vada Pav</span> – Known as the Indian burger,
-          this spicy potato filling wrapped in bread is a must-try.
-        </p>
+          <h2>1. Shimla, Himachal Pradesh</h2>
+          <p>
+            The capital city of Himachal Pradesh, Shimla is known for its colonial charm,
+            bustling mall road, and scenic viewpoints. Enjoy toy train rides and cozy cafes.
+          </p>
 
-        {/* Inline Ad */}
-        <div className="ad-inline">
-          <span className="ad-label">Sponsored</span>
-          <div className="ad-box">300x250 Inline Ad</div>
-        </div>
+          <h2>2. Manali, Himachal Pradesh</h2>
+          <p>
+            Nestled in the Kullu Valley, Manali is perfect for adventure lovers. Trekking, paragliding, and river rafting are popular activities.
+          </p>
 
-        <p>
-          2️⃣ <span className="bold">Pani Puri</span> – Crispy puris filled with
-          tangy water, chutney, and potato stuffing. Perfect for evening snacks.
-        </p>
+          <h2>3. Darjeeling, West Bengal</h2>
+          <p>
+            Famous for its tea gardens and the Himalayan Railway, Darjeeling offers spectacular sunrise views over Mount Kanchenjunga.
+          </p>
 
-        <p>
-          3️⃣ <span className="bold">Pav Bhaji</span> – Spicy mashed vegetables
-          served with buttery bread rolls. A street-side classic.
-        </p>
+          {/* Inline Ad */}
+          <AdSlot
+            id="ad-in-article-2"
+            keyId={inlineKey}
+            width={300}
+            height={250}
+            onLoad={enqueueAd}
+          />
 
-        <p>
-          4️⃣ <span className="bold">Sev Puri</span> – Crisp puris topped with
-          chutney, potatoes, and sev. A burst of flavors in every bite.
-        </p>
+          <h2>4. Munnar, Kerala</h2>
+          <p>
+            Surrounded by tea plantations and rolling hills, Munnar is ideal for nature lovers and photographers.
+          </p>
 
+          <h2>5. Ooty, Tamil Nadu</h2>
+          <p>
+            The “Queen of Hill Stations,” Ooty is famous for its botanical gardens, serene lakes, and charming Nilgiri hills.
+          </p>
 
- {/* === CONTINUE SECTION (only after verification) === */}
-        {showContinue && (
-          <div className="continue-section">
-            {continueClicks === 0 ? (
-              <button className="btn-primary" onClick={handleContinue}>
-                User Attached ➡️
-              </button>
-            ) : (
-              <div className="continue-real">
-                <div className="hint">Thanks — click again to proceed.</div>
-                <button className="btn-success" onClick={handleContinue}>
-                  Continue to Final Page ➡️
-                </button>
-              </div>
+          <h2>6. Coorg, Karnataka</h2>
+          <p>
+            Also known as Kodagu, Coorg is known for coffee plantations, waterfalls, and trekking trails through lush forests.
+          </p>
+
+          {/* Inline Ad */}
+          <AdSlot
+            id="ad-in-article-3"
+            keyId={inlineKey}
+            width={300}
+            height={250}
+            onLoad={enqueueAd}
+            />
+            {showContinue && (
+              <section>
+                <p><b>Press Continue to proceed</b></p>
+                {continueClicks === 0 ? (
+                  <button onClick={handleContinue}>Continue</button>
+                ) : (
+                  <div>
+                    <button onClick={handleContinue}>Continue</button>
+                  </div>
+                )}
+              </section>
             )}
-          </div>
-        )}
 
-        {/* Another Inline Ad */}
-        <div className="ad-inline">
-          <span className="ad-label">Sponsored</span>
-          <div className="ad-box">300x250 Inline Ad</div>
-        </div>
+          <h2>7. Mount Abu, Rajasthan</h2>
+          <p>
+            The only hill station in Rajasthan, Mount Abu offers lakes, temples, and panoramic sunset points.
+          </p>
 
-        <p>
-          5️⃣ <span className="bold">Falooda</span> – A sweet cold dessert with
-          rose syrup, jelly, and ice cream. Perfect way to end your street food
-          journey!
-        </p>
-      </div>
+          <h2>8. Mussoorie, Uttarakhand</h2>
+          <p>
+            Known as the “Queen of Hills,” Mussoorie offers scenic viewpoints, waterfalls, and a relaxed hill vibe.
+          </p>
 
+          <h2>9. Kasauli, Himachal Pradesh</h2>
+          <p>
+            A quaint hill town with colonial-era charm, quiet trails, and scenic sunsets over the valley.
+          </p>
 
-      {/* Sticky Bottom Ad */}
-      <div className="sticky-ad">
-        <span className="ad-label">Advertisement</span>
-        <div className="ad-box">Sticky 320x50 Banner</div>
+          <h2>10. Nainital, Uttarakhand</h2>
+          <p>
+            Famous for its beautiful lake, Nainital combines adventure, shopping, and stunning hill views.
+          </p>
+
+          {/* Continue button */}
+        </article>
+      </main>
+
+      {/* Sticky bottom banner */}
+      <div className="sticky">
+        <AdSlot
+          id="ad-sticky-bottom"
+          keyId={bannerKey}
+          width={320}
+          height={50}
+          onLoad={enqueueAd}
+        />
       </div>
     </div>
   );
-};
-
-export default Page2;
+}

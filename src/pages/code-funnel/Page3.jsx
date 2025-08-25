@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { revealCode } from "../../api";
 import "./Styles/finalPage.css";
+import AdSlot from "../../components/adslot/AdSlot";
 
 const Page3 = () => {
   const { slug } = useParams();
@@ -17,11 +18,8 @@ const Page3 = () => {
   const [copyErr, setCopyErr] = useState(null);
 
   // Replace with your ad network show() method
-  const openAdPopup = () => {
-    // Example placeholder (replace with Adsterra/Propeller call)
-    // window._pu && window._pu.show();
-    window.open("about:blank", "_blank", "noopener"); 
-  };
+
+  const adQueueRef = useRef([]);
 
   const handleStart = () => {
     if (!started) setStarted(true);
@@ -35,7 +33,7 @@ const Page3 = () => {
 
   const handleContinue = async () => {
     if (continueClicks === 0) {
-      openAdPopup(); // fake
+      window._pu?.show?.();
       setContinueClicks(1);
       return;
     }
@@ -58,7 +56,7 @@ const Page3 = () => {
     setCopyErr(null);
     try {
       // Fire ad first (still a user gesture)
-      openAdPopup();
+      window._pu?.show?.();
 
       const text = String(code ?? "");
       if (!text) throw new Error("No code available");
@@ -85,6 +83,23 @@ const Page3 = () => {
     }
   };
 
+  const enqueueAd = (loadFn) => {
+    adQueueRef.current.push(loadFn);
+  };
+
+  useEffect(() => {
+    const runQueue = async () => {
+      for (const loadAdFn of adQueueRef.current) {
+        await loadAdFn();
+      }
+    };
+    runQueue();
+  }, []);
+
+  // Your ad keys
+  const bannerKey = "c2b2533e7be1f40efc683cff33e98ae7"; // 300x50
+  const inlineKey = "f0fb375a70e618a337898e0611ab95dd"; // 300x250
+
   useEffect(() => {
     const meta = document.createElement("meta");
     meta.name = "robots";
@@ -100,15 +115,30 @@ const Page3 = () => {
     <div className="final-page">
       {/* Header Ad */}
       <div className="ad-header">
-        <span className="ad-label">Advertisement</span>
-        <div className="ad-box">728x90 Banner Ad</div>
+        <AdSlot
+          id="ad-top-banner"
+          keyId={bannerKey}
+          width={320}
+          height={50}
+          onLoad={enqueueAd}
+        />
       </div>
 
       <div className="content">
         <h1 className="title">🎉 Final Step</h1>
         <p className="subtitle">
-          Unlock your special code below. Complete verification to access 👇
+          Unlock {slug} code below. Last verification to access 👇
         </p>
+
+        <div className="ad-inline">
+          <AdSlot
+            id="ad-in-article-1"
+            keyId={inlineKey}
+            width={300}
+            height={250}
+            onLoad={enqueueAd}
+          />
+        </div>
 
         {/* Verification */}
         {!started ? (
@@ -116,38 +146,51 @@ const Page3 = () => {
             <p className="verify-text">
               Click below to start <b>10s verification</b>.
             </p>
-            <button className="btn-dark" onClick={handleStart}>Start Verification</button>
+            <button className="btn-dark" onClick={handleStart}>
+              Start Verification
+            </button>
           </div>
         ) : countdown > 0 ? (
           <div className="verify-box">
-            <p className="verify-text">Verifying… <b>{countdown}s</b> remaining</p>
+            <p className="verify-text">
+              Verifying… <b>{countdown}s</b> remaining
+            </p>
             <div className="progress">
-              <div className="progress-bar"
-                   style={{ width: `${Math.round(((10 - countdown) / 10) * 100)}%` }} />
+              <div
+                className="progress-bar"
+                style={{
+                  width: `${Math.round(((10 - countdown) / 10) * 100)}%`,
+                }}
+              />
             </div>
           </div>
         ) : !unlocked ? (
           <div className="verify-box">
             <p className="verify-text success">Verification complete ✅</p>
-            <p className="scroll-hint">Scroll down to continue...</p>
+            <p className="scroll-hint">Scroll down to Access code</p>
           </div>
         ) : null}
 
         {/* Inline Ad */}
-        <div className="ad-inline">
-          <span className="ad-label">Sponsored</span>
-          <div className="ad-box">300x250 Inline Ad</div>
-        </div>
+        
 
         {/* Continue */}
         {countdown === 0 && !unlocked && (
           <div className="continue-section">
             {continueClicks === 0 ? (
-              <button className="btn-primary" onClick={handleContinue}>Get My Code ➡️</button>
+              <button className="btn-primary" onClick={handleContinue}>
+                Get My Code ➡️
+              </button>
             ) : (
               <div className="continue-real">
-                <div className="hint">Thanks — click again to reveal your code.</div>
-                <button className="btn-success" onClick={handleContinue} disabled={loading}>
+                <div className="hint">
+                  Thanks — click again to reveal your code.
+                </div>
+                <button
+                  className="btn-success"
+                  onClick={handleContinue}
+                  disabled={loading}
+                >
                   {loading ? "Loading..." : "Unlock Code 🔓"}
                 </button>
               </div>
@@ -168,7 +211,10 @@ const Page3 = () => {
 
                 <div className="code-actions">
                   <div className="code-box">{code || "No code"}</div>
-                  <button className="btn-primary copy-btn" onClick={handleCopyCode}>
+                  <button
+                    className="btn-primary copy-btn"
+                    onClick={handleCopyCode}
+                  >
                     {copied ? "Copied ✔" : "Copy Code"}
                   </button>
                 </div>
@@ -177,21 +223,33 @@ const Page3 = () => {
 
                 {/* Ad near code */}
                 <div className="ad-inline">
-                  <span className="ad-label">Sponsored</span>
-                  <div className="ad-box">300x250 Inline Ad</div>
                 </div>
 
-                <p>Need help? <a href="/support">Contact Support</a></p>
+                <p>
+                  Need help? <a href="/support">Contact Support</a>
+                </p>
               </>
             )}
           </div>
         )}
+        <AdSlot
+          id="ad-in-article-2"
+          keyId={inlineKey}
+          width={300}
+          height={250}
+          onLoad={enqueueAd}
+        />
       </div>
 
       {/* Sticky Ad */}
       <div className="sticky-ad">
-        <span className="ad-label">Advertisement</span>
-        <div className="ad-box">Sticky 320x50 Banner</div>
+        <AdSlot
+          id="ad-sticky-bottom"
+          keyId={bannerKey}
+          width={320}
+          height={50}
+          onLoad={enqueueAd}
+        />
       </div>
     </div>
   );
