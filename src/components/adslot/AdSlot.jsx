@@ -1,68 +1,48 @@
-// src/components/AdSlot.jsx
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
-export default function AdSlot({
-  id,
-  adKey,       // for Adsterra iframe/banner ads
-  width,
-  height,
-  format = "iframe",
-  src,         // for direct script ads (Propeller/Adsterra .js links)
-}) {
-  useEffect(() => {
-    const container = document.getElementById(id);
-    if (!container) return;
+const AdSlot = ({ id, keyId, width, height, onLoad }) => {
+  const containerRef = useRef(null);
 
-    // cleanup before mounting
-    container.innerHTML = "";
+  const loadAd = () => {
+    return new Promise((resolve) => {
+      const container = containerRef.current;
+      if (!container) return resolve();
 
-    if (adKey) {
-      // Case 1: Adsterra with adKey + invoke.js
-      const inline = document.createElement("script");
-      inline.type = "text/javascript";
-      inline.innerHTML = `
-        atOptions = {
-          'key' : '${adKey}',
-          'format' : '${format}',
-          'height' : ${height},
-          'width' : ${width},
-          'params' : {}
+      container.innerHTML = ""; // clear previous content
+
+      // Inline options script
+      const inlineScript = document.createElement("script");
+      inlineScript.type = "text/javascript";
+      inlineScript.innerHTML = `
+        window.atOptions = {
+          'key': '${keyId}',
+          'format': 'iframe',
+          'height': ${height},
+          'width': ${width},
+          'params': {}
         };
       `;
-      container.appendChild(inline);
 
-      const external = document.createElement("script");
-      external.type = "text/javascript";
-      external.src = `//www.highperformanceformat.com/${adKey}/invoke.js`;
-      container.appendChild(external);
-    } 
-    else if (src) {
-      // Case 2: Direct script-based ads
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = src;
-      script.async = true;
-      container.appendChild(script);
-    }
+      // External ad script
+      const externalScript = document.createElement("script");
+      externalScript.type = "text/javascript";
+      externalScript.src = "//www.highperformanceformat.com/" + keyId + "/invoke.js";
 
-    // cleanup on unmount
-    return () => {
-      container.innerHTML = "";
-    };
-  }, [id, adKey, width, height, format, src]);
+      // Resolve promise on load or after 2 seconds fallback
+      externalScript.onload = () => resolve();
+      externalScript.onerror = () => resolve(); 
+      setTimeout(() => resolve(), 2000);
 
-  return (
-    <div
-      id={id}
-      className="ad-box"
-      style={{
-        height: height ? `${height}px` : "auto",
-        background: "#f5f5f5",
-        textAlign: "center",
-        padding: "4px",
-      }}
-    >
-      <span style={{ fontSize: "12px", color: "#666" }}>Loading ad…</span>
-    </div>
-  );
-}
+      container.appendChild(inlineScript);
+      container.appendChild(externalScript);
+    });
+  };
+
+  useEffect(() => {
+    if (onLoad) onLoad(loadAd);
+  }, [keyId, width, height, onLoad]);
+
+  return <div id={id} ref={containerRef} />;
+};
+
+export default AdSlot;

@@ -1,227 +1,241 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./Styles/ArticlePage1.css";
+import AdSlot from "../../components/adslot/AdSlot";
 
 export default function ArticlePage1() {
   const { slug } = useParams();
   const navigate = useNavigate();
 
-  // monetization flow
-  const [started, setStarted] = useState(false); // user started the 10s verification
-  const [countdown, setCountdown] = useState(3); // 10-second timer
-  const [continueClicks, setContinueClicks] = useState(0); // 0 = fake, 1 = real
+  // Verification states
+  const [started, setStarted] = useState(false);
+  const [countdown, setCountdown] = useState(10);
+  const [continueClicks, setContinueClicks] = useState(0);
   const [showContinue, setShowContinue] = useState(false);
-  // OPTIONAL: hook your ad network’s click/open here
-  const openAdPopup = () => {
-  if (window._pu) {
-    window._pu.show();
-  }
-};
 
-  // start verification
-  const handleStart = () => {
-    if (!started) setStarted(true);
-  };
+  // Ad queue refs
+  const adQueueRef = useRef([]);
 
-  // countdown tick
+  // Start verification
+  const handleStart = () => !started && setStarted(true);
+
+  // Countdown
   useEffect(() => {
     if (!started || countdown <= 0) return;
     const t = setTimeout(() => setCountdown((c) => c - 1), 1000);
     return () => clearTimeout(t);
   }, [started, countdown]);
 
-  // once finished reveal continue button
-
   useEffect(() => {
-    if (countdown === 0 && started) {
-      setShowContinue(true);
-    }
+    if (countdown === 0 && started) setShowContinue(true);
   }, [countdown, started]);
 
-  // continue button logic (fake → real)
+  // Continue button logic
   const handleContinue = () => {
     if (continueClicks === 0) {
-      openAdPopup(); // fake click triggers an ad
+      window._pu?.show?.();
       setContinueClicks(1);
       return;
     }
-    // real continue: go to Page 2
-    navigate(`/a/${slug}/2`); // or navigate(`/a/${slug}/2`) if you build that route next
+    navigate(`/a/${slug}/2`);
   };
- 
-   // ✅ Inject Adsterra scripts on mount
-  
-useEffect(() => {
-    // In-Article Ad (300x250)
-    const script1 = document.createElement("script");
-    script1.innerHTML = `
-      atOptions = {
-        'key' : 'f0fb375a70e618a337898e0611ab95dd',
-        'format' : 'iframe',
-        'height' : 250,
-        'width' : 300,
-        'params' : {}
-      };
-    `;
-    const src1 = document.createElement("script");
-    src1.src = "//www.highperformanceformat.com/f0fb375a70e618a337898e0611ab95dd/invoke.js";
 
-    document.getElementById("ad-in-article-1")?.appendChild(script1);
-    document.getElementById("ad-in-article-1")?.appendChild(src1);
+  // Queue system for ads
+  const enqueueAd = (loadFn) => {
+    adQueueRef.current.push(loadFn);
+  };
 
-    // Sticky Banner (320x50)
-    const script2 = document.createElement("script");
-    script2.innerHTML = `
-      atOptions = {
-        'key' : 'c2b2533e7be1f40efc683cff33e98ae7',
-        'format' : 'iframe',
-        'height' : 50,
-        'width' : 320,
-        'params' : {}
-      };
-    `;
-    const src2 = document.createElement("script");
-    src2.src = "//www.highperformanceformat.com/c2b2533e7be1f40efc683cff33e98ae7/invoke.js";
-
-    document.getElementById("ad-sticky-bottom")?.appendChild(script2);
-    document.getElementById("ad-sticky-bottom")?.appendChild(src2);
-
-    // Popunder / JS ad
-    const popunder = document.createElement("script");
-    popunder.src = "//pl27499555.profitableratecpm.com/60/64/83/60648330d5724422f8d3884cae900cd4.js";
-    document.body.appendChild(popunder);
-
-    return () => {
-      script1.remove();
-      src1.remove();
-      script2.remove();
-      src2.remove();
-      popunder.remove();
+  useEffect(() => {
+    const runQueue = async () => {
+      for (const loadAdFn of adQueueRef.current) {
+        await loadAdFn();
+      }
     };
+    runQueue();
   }, []);
+
+  // Your ad keys
+  const bannerKey = "c2b2533e7be1f40efc683cff33e98ae7"; // 300x50
+  const inlineKey = "f0fb375a70e618a337898e0611ab95dd"; // 300x250
 
   return (
     <div className="article-page">
-      {/* Top banner ad */}
+      {/* Top banner */}
       <header className="container">
-        <div className="ad-label">Advertisement</div>
-        <div id="ad-top-banner" className="ad-box h-90">
-          <span>Top Banner Ad</span>
-        </div>
+        <AdSlot
+          id="ad-top-banner"
+          keyId={bannerKey}
+          width={320}
+          height={50}
+          onLoad={enqueueAd}
+        />
       </header>
 
       <main className="container">
         <article className="post">
-          <h1 className="title">
-            Top 7 Hidden Travel Spots in India (Don’t Miss #5!)
-          </h1>
-          <p className="meta">5 min read · Curated by TravelRadar</p>
+          <h1 className="title">Top 7 Hidden Travel Spots in India</h1>
+          <p className="meta">10 min read · Curated by TravelRadar</p>
 
-          {/* --- START VERIFICATION BUTTON (ABOVE CONTENT) --- */}
+          {/* Verification */}
           {!started ? (
             <div className="verify-box">
-              <p className="verify-text">
+              <p>
                 Click below to start <b>verification</b>.
               </p>
-              <button className="btn btn-dark" onClick={handleStart}>
-                Start Verification
-              </button>
+              <button onClick={handleStart}>Start Verification</button>
             </div>
           ) : countdown > 0 ? (
             <div className="verify-box">
-              <p className="verify-text">
+              <p>
                 Verifying… <b>{countdown}s</b> remaining
               </p>
-              <div className="progress">
-                <div
-                  className="progress-bar"
-                  style={{
-                    width: `${Math.round(((10 - countdown) / 10) * 100)}%`,
-                  }}
-                />
-              </div>
+              <div
+                className="progress-bar"
+                style={{
+                  width: `${Math.round(((10 - countdown) / 10) * 100)}%`,
+                }}
+              />
             </div>
           ) : (
             <div className="verify-box">
-              <p className="verify-text success">Verification complete ✅</p>
-              <p className="scroll-hint">Scroll down to continue...</p>
+              <p>Verification complete ✅</p>
+              <p>Scroll down to continue...</p>
             </div>
           )}
 
-          {/* In-article ad #1 */}
-          <div className="ad-in-article">
-            <div className="ad-label">Advertisement</div>
-            <div id="ad-in-article-1" className="ad-box h-250"/>
-          </div>
+          {/* Inline Ad 1 */}
+          <AdSlot
+            id="ad-in-article-1"
+            keyId={inlineKey}
+            width={300}
+            height={250}
+            onLoad={enqueueAd}
+          />
 
           <p>
             India is packed with famous sights, but some of the country’s most
-            magical places hide off the typical tourist trail. If you love quiet
-            valleys, mirror-still lakes, and villages where time moves slow,
-            this list is for you.
-          </p>
-          <p>
-            The best part? Most of these gems are perfect for a long weekend and
-            won’t crush your budget. From high-altitude meadows to emerald
-            beaches, let’s discover the spots locals whisper about.
+            magical places remain hidden off the tourist trail. If you love
+            quiet valleys, mirror-still lakes, and villages where time moves
+            slow, this list is for you.
           </p>
 
-          {/* In-article ad #2 */}
-          <div className="ad-in-article">
-            <div className="ad-label">Advertisement</div>
-            <div id="ad-in-article-2" className="ad-box h-250">
-              <span>In-Article Ad</span>
-            </div>
-          </div>
+          <p>
+            From high-altitude meadows to emerald beaches, these destinations
+            let you experience India the way locals do—peaceful, scenic, and
+            full of surprises.
+          </p>
+
+          {/* Inline Ad 2 */}
+          <AdSlot
+            id="ad-in-article-2"
+            keyId={inlineKey}
+            width={300}
+            height={250}
+            onLoad={enqueueAd}
+          />
 
           <h2>Ziro Valley, Arunachal Pradesh</h2>
           <p>
-            Pine-clad hills, rice fields like green quilts, and the gentle
-            rhythm of Apatani village life. Ziro is a slow traveler’s
-            dream—music festivals in autumn and misty mornings year-round.
+            A valley tucked between pine-clad hills, Ziro offers a serene
+            escape. Wander through Apatani tribal villages, enjoy misty
+            mornings, and attend the vibrant Ziro Music Festival in autumn.
           </p>
 
           <h2>Gokarna’s Secret Coves, Karnataka</h2>
           <p>
-            Skip the main beach and trek to Paradise, Half-Moon, and Om’s
-            quieter corners. Golden sand, clean water, and cliffside sunsets
-            without the Goa rush.
+            Skip crowded Goa beaches and trek to hidden coves like Paradise and
+            Half-Moon. Golden sand, turquoise waters, and breathtaking sunsets
+            await the mindful traveler.
           </p>
 
           <h2>Mechuka, Arunachal Pradesh</h2>
           <p>
-            A valley wrapped in snow peaks with wooden homes, hanging bridges,
-            and crystal streams. Go before everyone else does.
+            Snow-capped peaks, hanging bridges, and crystal-clear streams define
+            this secluded valley. Visit before the crowds and witness pristine
+            landscapes in their untouched glory.
           </p>
 
-          {/* In-article ad #3 */}
-          <div className="ad-in-article">
-            <div className="ad-label">Advertisement</div>
-            <div id="ad-in-article-3" className="ad-box h-250">
-              <span>In-Article Ad</span>
-            </div>
-          </div>
+          {/* Inline Ad 3 */}
+          <AdSlot
+            id="ad-in-article-3"
+            keyId={inlineKey}
+            width={300}
+            height={250}
+            onLoad={enqueueAd}
+          />
 
           <h2>Bangaram Island, Lakshadweep</h2>
           <p>
-            A ring of turquoise so clear it looks photoshopped. Snorkel gardens,
-            silent nights, and stars like powdered sugar spilled across the sky.
+            A tropical paradise with pristine coral reefs, powdery beaches, and
+            sparkling turquoise waters. Snorkel, dive, or simply relax under the
+            stars with the soothing sound of waves.
           </p>
 
-          {/* --- CONTINUE BUTTON ONLY AFTER VERIFICATION --- */}
+          <h2>Majuli, Assam</h2>
+          <p>
+            The world’s largest river island, Majuli is a cultural haven.
+            Explore Satras (monasteries), observe traditional mask-making, and
+            witness vibrant festivals celebrating local art and religion.
+          </p>
 
+          <h2>Chopta Valley, Uttarakhand</h2>
+          <p>
+            Often called “Mini Switzerland,” Chopta is the trekking base for
+            Tungnath and Chandrashila peaks. Rhododendron forests, alpine
+            meadows, and snow-capped panoramas greet every hiker.
+          </p>
+
+          <h2>Tawang, Arunachal Pradesh</h2>
+          <p>
+            Home to one of India’s largest monasteries, Tawang offers serene
+            lakes, high-altitude landscapes, and a deep dive into Buddhist
+            culture in the lap of the Himalayas.
+          </p>
+
+          <h2>Hampi, Karnataka</h2>
+          <p>
+            An ancient city of giant boulders, rivers, and mysterious ruins.
+            Hampi’s landscapes are otherworldly, best explored during sunrise or
+            away from the tourist throngs.
+          </p>
+
+          <h2>Spiti Valley, Himachal Pradesh</h2>
+          <p>
+            A desert high in the Himalayas, Spiti combines ancient monasteries,
+            rugged roads, and breathtaking views. Ideal for adventure seekers
+            and photographers seeking raw landscapes.
+          </p>
+
+          <h2>Khajuraho, Madhya Pradesh</h2>
+          <p>
+            Known for its intricately carved temples, Khajuraho is a quiet
+            cultural escape. Explore step wells, local villages, and learn about
+            ancient Indian architecture in a peaceful setting.
+          </p>
+
+          <h2>Patan, Gujarat</h2>
+          <p>
+            Famous for its step-wells and vibrant textile craft, Patan offers a
+            rich cultural experience. Discover history, art, and architecture
+            far from crowded tourist trails.
+          </p>
+
+          <h2>Velas, Maharashtra</h2>
+          <p>
+            A serene coastal village where Olive Ridley turtles nest. Witness
+            the hatchlings make their journey to the sea—a magical natural
+            spectacle few places can offer.
+          </p>
+
+          {/* Continue button */}
           {showContinue && (
-            <section className="verify">
+            <section>
               {continueClicks === 0 ? (
-                <button className="btn btn-primary" onClick={handleContinue}>
-                  Continue
-                </button>
+                <button onClick={handleContinue}>Continue</button>
               ) : (
-                <div className="continue-real">
-                  <div className="hint">Thanks — click again to proceed.</div>
-                  <button className="btn btn-success" onClick={handleContinue}>
-                    Continue (Real)
-                  </button>
+                <div>
+                  <div>Thanks — click again to proceed.</div>
+                  <button onClick={handleContinue}>Continue (Real)</button>
                 </div>
               )}
             </section>
@@ -231,9 +245,13 @@ useEffect(() => {
 
       {/* Sticky bottom banner */}
       <div className="sticky">
-        <div className="ad-label">Advertisement</div>
-        <div id="ad-sticky-bottom" className="ad-box h-60">
-        </div>
+        <AdSlot
+          id="ad-sticky-bottom"
+          keyId={bannerKey}
+          width={320}
+          height={50}
+          onLoad={enqueueAd}
+        />
       </div>
     </div>
   );
