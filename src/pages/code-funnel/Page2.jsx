@@ -42,7 +42,7 @@ const Page2 = () => {
       return;
     }
     // real navigation
-    navigate(`/a/${slug}/final`);
+    navigate(`/a/${slug}/complete`);
   };
 
   useEffect(() => {

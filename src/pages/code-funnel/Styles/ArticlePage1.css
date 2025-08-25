@@ -1,19 +1,15 @@
-/* Styles/ArticlePage1.css */
+/* ================= Scoped CSS for ArticlePage1 ================= */
 
-/* Scoped to article-page */
-.article-page body,
-.article-page html {
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #fdfdfd;
-  color: #222;
-}
-
+/* Root page */
 .article-page {
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fdfdfd;
+  color: #222;
+  margin: 0;
+  padding: 0;
 }
 
 /* Container for content */
@@ -29,10 +25,11 @@
   width: 100%;
 }
 
+/* Titles & Meta */
 .article-page .title {
   font-size: 1.6rem;
-  margin-bottom: 0.3rem;
   font-weight: bold;
+  margin-bottom: 0.3rem;
 }
 
 .article-page .meta {
@@ -70,59 +67,59 @@
   margin: 5px 0;
 }
 
+/* Progress bar */
 .article-page .progress-bar {
-  height: 6px;
-  background-color: #4caf50;
-  border-radius: 3px;
-  margin-top: 5px;
+  height: 10px;
+  background: linear-gradient(90deg, #ff7e5f, #feb47b);
+  border-radius: 5px;
+  margin-top: 10px;
   transition: width 0.5s ease;
 }
 
-.article-page .btn {
+/* ================= Buttons ================= */
+.article-page button {
   display: inline-block;
-  padding: 8px 15px;
-  margin-top: 8px;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: 600;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #ff7e5f, #feb47b);
+  color: #fff;
   cursor: pointer;
-  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  margin: 10px 0;
 }
 
-.article-page .btn-dark {
-  background-color: #333;
-  color: #fff;
+.article-page button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
-.article-page .btn-primary {
-  background-color: #1976d2;
-  color: #fff;
+.article-page button:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.article-page .btn-success {
-  background-color: #388e3c;
-  color: #fff;
-}
-
-/* Continue button section */
-.article-page .verify section {
-  margin-top: 15px;
+/* Continue button container */
+.article-page section {
+  margin-top: 20px;
   text-align: center;
 }
 
-.article-page .continue-real .hint {
-  font-size: 0.85rem;
+/* Loading screen */
+.article-page .loading-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  font-size: 20px;
+  font-weight: 500;
   color: #555;
-  margin-bottom: 5px;
 }
 
-/* Ads */
-.article-page .ad-label {
-  font-size: 0.75rem;
-  color: #888;
-  margin-bottom: 5px;
-  text-align: center;
-}
-
+/* ================= Ads ================= */
 .article-page .ad-in-article,
 .article-page header > div,
 .article-page .sticky {
@@ -132,28 +129,25 @@
   margin: 15px 0;
 }
 
-/* Ad container ensures min-height and proper layout */
 .article-page .ad-in-article,
 .article-page #ad-top-banner,
 .article-page #ad-sticky-bottom {
-  max-width: 300px; /* mobile-friendly width */
+  max-width: 300px;
   width: 100%;
-  /* background-color: #000; placeholder if ad fails */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Heights for banners and inline ads */
 .article-page #ad-top-banner,
 .article-page #ad-sticky-bottom {
-  min-height: 50px; /* top/bottom banner height */
+  min-height: 50px;
 }
 
 .article-page #ad-in-article-1,
 .article-page #ad-in-article-2,
 .article-page #ad-in-article-3 {
-  min-height: 250px; /* inline ad height */
+  min-height: 250px;
 }
 
 /* Sticky bottom banner */
@@ -163,11 +157,10 @@
   left: 0;
   background: #fff;
   padding: 5px 0;
-  /* box-shadow: 0 -2px 5px rgba(0,0,0,0.1); */
   z-index: 1000;
 }
 
-/* Responsive adjustments */
+/* ================= Responsive ================= */
 @media (min-width: 400px) {
   .article-page .container {
     max-width: 360px;

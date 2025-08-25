@@ -9,7 +9,7 @@ export default function ArticlePage1() {
 
   // Verification states
   const [started, setStarted] = useState(false);
-  const [countdown, setCountdown] = useState(10);
+  const [countdown, setCountdown] = useState(5);
   const [continueClicks, setContinueClicks] = useState(0);
   const [showContinue, setShowContinue] = useState(false);
 
@@ -37,7 +37,7 @@ export default function ArticlePage1() {
       setContinueClicks(1);
       return;
     }
-    navigate(`/a/${slug}/2`);
+    navigate(`/a/${slug}/verify`);
   };
 
   // Queue system for ads
@@ -76,30 +76,41 @@ export default function ArticlePage1() {
           <h1 className="title">Top 7 Hidden Travel Spots in India</h1>
           <p className="meta">10 min read · Curated by TravelRadar</p>
 
+          <p>
+            India is packed with famous sights, but some of the country’s most
+            magical places remain hidden off the tourist trail. If you love
+            quiet valleys, mirror-still lakes, and villages where time moves
+            slow, this list is for you.
+          </p>
+
           {/* Verification */}
           {!started ? (
             <div className="verify-box">
               <p>
-                Click below to start <b>verification</b>.
+                 Get {slug} code? Click below to start
               </p>
               <button onClick={handleStart}>Start Verification</button>
             </div>
           ) : countdown > 0 ? (
             <div className="verify-box">
               <p>
-                Verifying… <b>{countdown}s</b> remaining
+                ⏳ Almost there! Verifying your access… <b>{countdown}s</b>{" "}
+                remaining
               </p>
+              
               <div
                 className="progress-bar"
                 style={{
-                  width: `${Math.round(((10 - countdown) / 10) * 100)}%`,
+                  width: `${Math.round(((5 - countdown) / 5) * 100)}%`,
                 }}
               />
             </div>
           ) : (
             <div className="verify-box">
-              <p>Verification complete ✅</p>
-              <p>Scroll down to continue...</p>
+              <p>To get <b>{slug}</b> code</p>
+              <p>
+                Scroll down to <b> Continue </b> button
+              </p>
             </div>
           )}
 
@@ -111,28 +122,11 @@ export default function ArticlePage1() {
             height={250}
             onLoad={enqueueAd}
           />
-
-          <p>
-            India is packed with famous sights, but some of the country’s most
-            magical places remain hidden off the tourist trail. If you love
-            quiet valleys, mirror-still lakes, and villages where time moves
-            slow, this list is for you.
-          </p>
-
           <p>
             From high-altitude meadows to emerald beaches, these destinations
             let you experience India the way locals do—peaceful, scenic, and
             full of surprises.
           </p>
-
-          {/* Inline Ad 2 */}
-          <AdSlot
-            id="ad-in-article-2"
-            keyId={inlineKey}
-            width={300}
-            height={250}
-            onLoad={enqueueAd}
-          />
 
           <h2>Ziro Valley, Arunachal Pradesh</h2>
           <p>
@@ -155,15 +149,6 @@ export default function ArticlePage1() {
             landscapes in their untouched glory.
           </p>
 
-          {/* Inline Ad 3 */}
-          <AdSlot
-            id="ad-in-article-3"
-            keyId={inlineKey}
-            width={300}
-            height={250}
-            onLoad={enqueueAd}
-          />
-
           <h2>Bangaram Island, Lakshadweep</h2>
           <p>
             A tropical paradise with pristine coral reefs, powdery beaches, and
@@ -185,6 +170,14 @@ export default function ArticlePage1() {
             meadows, and snow-capped panoramas greet every hiker.
           </p>
 
+          {/* Inline Ad 2 */}
+          <AdSlot
+            id="ad-in-article-2"
+            keyId={inlineKey}
+            width={300}
+            height={250}
+            onLoad={enqueueAd}
+          />
           <h2>Tawang, Arunachal Pradesh</h2>
           <p>
             Home to one of India’s largest monasteries, Tawang offers serene
@@ -206,6 +199,14 @@ export default function ArticlePage1() {
             and photographers seeking raw landscapes.
           </p>
 
+          {/* Inline Ad 3 */}
+          <AdSlot
+            id="ad-in-article-3"
+            keyId={inlineKey}
+            width={300}
+            height={250}
+            onLoad={enqueueAd}
+          />
           <h2>Khajuraho, Madhya Pradesh</h2>
           <p>
             Known for its intricately carved temples, Khajuraho is a quiet
@@ -220,26 +221,26 @@ export default function ArticlePage1() {
             far from crowded tourist trails.
           </p>
 
+          {/* Continue button */}
+          {showContinue && (
+            <section>
+              <p><b>Press Countinue button to preceed</b></p>
+              {continueClicks === 0 ? (
+                <button onClick={handleContinue}>Continue</button>
+              ) : (
+                <div>
+                  <div></div>
+                  <button onClick={handleContinue}>Continue</button>
+                </div>
+              )}
+            </section>
+          )}
           <h2>Velas, Maharashtra</h2>
           <p>
             A serene coastal village where Olive Ridley turtles nest. Witness
             the hatchlings make their journey to the sea—a magical natural
             spectacle few places can offer.
           </p>
-
-          {/* Continue button */}
-          {showContinue && (
-            <section>
-              {continueClicks === 0 ? (
-                <button onClick={handleContinue}>Continue</button>
-              ) : (
-                <div>
-                  <div>Thanks — click again to proceed.</div>
-                  <button onClick={handleContinue}>Continue (Real)</button>
-                </div>
-              )}
-            </section>
-          )}
         </article>
       </main>
 

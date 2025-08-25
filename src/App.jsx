@@ -29,9 +29,9 @@ export default function App() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/post/:id" element={<PostPage />} />
-          <Route path="/a/:slug/1" element={<ArticlePage1 />} />
-          <Route path="/a/:slug/2" element={<Page2 />} />
-          <Route path="/a/:slug/final" element={<Page3 />} />
+          <Route path="/a/:slug/start" element={<ArticlePage1 />} />
+          <Route path="/a/:slug/verify" element={<Page2 />} />
+          <Route path="/a/:slug/complete" element={<Page3 />} />
         </Routes>
       </div>
       <Footer />
