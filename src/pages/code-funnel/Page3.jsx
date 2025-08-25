@@ -17,8 +17,6 @@ const Page3 = () => {
   const [copied, setCopied] = useState(false);
   const [copyErr, setCopyErr] = useState(null);
 
-  // Replace with your ad network show() method
-
   const adQueueRef = useRef([]);
 
   const handleStart = () => {
@@ -40,7 +38,7 @@ const Page3 = () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await revealCode(slug); // expects { code: "..." }
+      const data = await revealCode(slug);
       setCode(data.code);
       setUnlocked(true);
     } catch (err) {
@@ -51,20 +49,16 @@ const Page3 = () => {
     }
   };
 
-  // Copy & play ad in the same click
   const handleCopyCode = async () => {
     setCopyErr(null);
     try {
-      // Fire ad first (still a user gesture)
       window._pu?.show?.();
-
       const text = String(code ?? "");
       if (!text) throw new Error("No code available");
 
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(text);
       } else {
-        // Fallback for http/non-secure/iOS
         const ta = document.createElement("textarea");
         ta.value = text;
         ta.style.position = "fixed";
@@ -96,7 +90,6 @@ const Page3 = () => {
     runQueue();
   }, []);
 
-  // Your ad keys
   const bannerKey = "c2b2533e7be1f40efc683cff33e98ae7"; // 300x50
   const inlineKey = "f0fb375a70e618a337898e0611ab95dd"; // 300x250
 
@@ -105,7 +98,6 @@ const Page3 = () => {
     meta.name = "robots";
     meta.content = "noindex, nofollow";
     document.head.appendChild(meta);
-
     return () => {
       document.head.removeChild(meta);
     };
@@ -113,7 +105,7 @@ const Page3 = () => {
 
   return (
     <div className="final-page">
-      {/* Header Ad */}
+      {/* Header Ad (always mounted) */}
       <div className="ad-header">
         <AdSlot
           id="ad-top-banner"
@@ -130,6 +122,7 @@ const Page3 = () => {
           Unlock {slug} code below. Last verification to access 👇
         </p>
 
+        {/* Inline Ad (always mounted) */}
         <div className="ad-inline">
           <AdSlot
             id="ad-in-article-1"
@@ -141,107 +134,109 @@ const Page3 = () => {
         </div>
 
         {/* Verification */}
-        {!started ? (
-          <div className="verify-box">
-            <p className="verify-text">
-              Click below to start <b>10s verification</b>.
-            </p>
-            <button className="btn-dark" onClick={handleStart}>
-              Start Verification
+        <div className={`verify-box ${!started ? "show" : "hide"}`}>
+          <p className="verify-text">
+            Click below to start <b>10s verification</b>.
+          </p>
+          <button className="btn-dark" onClick={handleStart}>
+            Start Verification
+          </button>
+        </div>
+
+        <div
+          className={`verify-box ${started && countdown > 0 ? "show" : "hide"}`}
+        >
+          <p className="verify-text">
+            Verifying… <b>{countdown}s</b> remaining
+          </p>
+          <div className="progress">
+            <div
+              className="progress-bar"
+              style={{
+                width: `${Math.round(((10 - countdown) / 10) * 100)}%`,
+              }}
+            />
+          </div>
+        </div>
+
+        <div
+          className={`verify-box ${
+            started && countdown === 0 && !unlocked ? "show" : "hide"
+          }`}
+        >
+          <p className="verify-text success">Verification complete ✅</p>
+          <p className="scroll-hint">Scroll down to Access code</p>
+        </div>
+
+        {/* Continue Section (controlled by CSS not conditional mount) */}
+        <div
+          className={`continue-section ${
+            countdown === 0 && !unlocked ? "show" : "hide"
+          }`}
+        >
+          {continueClicks === 0 ? (
+            <button className="btn-primary" onClick={handleContinue}>
+              Get My Code ➡️
             </button>
-          </div>
-        ) : countdown > 0 ? (
-          <div className="verify-box">
-            <p className="verify-text">
-              Verifying… <b>{countdown}s</b> remaining
-            </p>
-            <div className="progress">
-              <div
-                className="progress-bar"
-                style={{
-                  width: `${Math.round(((10 - countdown) / 10) * 100)}%`,
-                }}
-              />
-            </div>
-          </div>
-        ) : !unlocked ? (
-          <div className="verify-box">
-            <p className="verify-text success">Verification complete ✅</p>
-            <p className="scroll-hint">Scroll down to Access code</p>
-          </div>
-        ) : null}
-
-        {/* Inline Ad */}
-        
-
-        {/* Continue */}
-        {countdown === 0 && !unlocked && (
-          <div className="continue-section">
-            {continueClicks === 0 ? (
-              <button className="btn-primary" onClick={handleContinue}>
-                Get My Code ➡️
-              </button>
-            ) : (
-              <div className="continue-real">
-                <div className="hint">
-                  Thanks — click again to reveal your code.
-                </div>
-                <button
-                  className="btn-success"
-                  onClick={handleContinue}
-                  disabled={loading}
-                >
-                  {loading ? "Loading..." : "Unlock Code 🔓"}
-                </button>
+          ) : (
+            <div className="continue-real">
+              <div className="hint">
+                Thanks — click again to reveal your code.
               </div>
-            )}
-          </div>
-        )}
+              <button
+                className="btn-success"
+                onClick={handleContinue}
+                disabled={loading}
+              >
+                {loading ? "Loading..." : "Unlock Code 🔓"}
+              </button>
+            </div>
+          )}
+        </div>
 
         {/* Revealed content */}
-        {unlocked && (
-          <div id="real-content" className="hidden-content">
-            <h2>✅ Your Code is Ready</h2>
+        <div
+          id="real-content"
+          className={`hidden-content ${unlocked ? "show" : "hide"}`}
+        >
+          <h2>✅ Your Code is Ready</h2>
 
-            {error ? (
-              <p className="error">{error}</p>
-            ) : (
-              <>
-                <p>Copy your code below and use it instantly:</p>
+          {error ? (
+            <p className="error">{error}</p>
+          ) : (
+            <>
+              <p>Copy your code below and use it instantly:</p>
+              <div className="code-actions">
+                <div className="code-box">{code || "No code"}</div>
+                <button
+                  className="btn-primary copy-btn"
+                  onClick={handleCopyCode}
+                >
+                  {copied ? "Copied ✔" : "Copy Code"}
+                </button>
+              </div>
+              {copyErr && <p className="copy-error">{copyErr}</p>}
 
-                <div className="code-actions">
-                  <div className="code-box">{code || "No code"}</div>
-                  <button
-                    className="btn-primary copy-btn"
-                    onClick={handleCopyCode}
-                  >
-                    {copied ? "Copied ✔" : "Copy Code"}
-                  </button>
-                </div>
+              {/* Ad near code (always mounted, hidden until unlocked) */}
+              <div className="ad-inline">
+                <AdSlot
+                  id="ad-in-article-2"
+                  keyId={inlineKey}
+                  width={300}
+                  height={250}
+                  onLoad={enqueueAd}
+                />
+              </div>
 
-                {copyErr && <p className="copy-error">{copyErr}</p>}
-
-                {/* Ad near code */}
-                <div className="ad-inline">
-                </div>
-
-                <p>
-                  Need help? <a href="/support">Contact Support</a>
-                </p>
-              </>
-            )}
-          </div>
-        )}
-        <AdSlot
-          id="ad-in-article-2"
-          keyId={inlineKey}
-          width={300}
-          height={250}
-          onLoad={enqueueAd}
-        />
+              <p>
+                Need help? <a href="/support">Contact Support</a>
+              </p>
+            </>
+          )}
+        </div>
       </div>
 
-      {/* Sticky Ad */}
+      {/* Sticky Ad (always mounted) */}
       <div className="sticky-ad">
         <AdSlot
           id="ad-sticky-bottom"

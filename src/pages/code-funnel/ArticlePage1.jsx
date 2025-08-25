@@ -217,11 +217,16 @@ export default function ArticlePage1() {
           {showContinue && (
             <section className="continue-section">
               <p><b>Press Continue button to proceed</b></p>
-              <PopunderAd
+              <button
+                onClick={() => navigate(`/a/${slug}/verify`)}
+              >
+                Continue
+              </button>
+              {/* <PopunderAd
                 scriptSrc={popunderScript}
                 onTrigger={() => navigate(`/a/${slug}/verify`)}
                 buttonText="Continue"
-              />
+              /> */}
             </section>
           )}
           <h2>Velas, Maharashtra</h2>
