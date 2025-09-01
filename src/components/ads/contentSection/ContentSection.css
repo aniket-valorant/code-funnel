@@ -1,0 +1,18 @@
+.content-section {
+  text-align: center;
+  margin: 20px auto;
+  padding: 10px;
+}
+
+.blurred-thumbnail {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 12px;
+  filter: blur(8px);
+  margin-bottom: 10px;
+}
+
+.caption {
+  font-size: 1rem;
+  color: #444;
+}

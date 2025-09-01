@@ -1,0 +1,21 @@
+.affiliate-btn {
+  display: block;
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 12px 20px;
+  margin: 12px auto;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  max-width: 90%;
+}
+
+.affiliate-btn.red {
+  background: #ff3b3b;
+  color: white;
+}
+
+.affiliate-btn.green {
+  background: #00c851;
+  color: white;
+}

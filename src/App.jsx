@@ -13,6 +13,7 @@ import Contact from "./pages/web/contact/Contact.jsx";
 import Privacy from "./pages/web/privacy/Privacy.jsx";
 import Terms from "./pages/web/terms/Terms.jsx";
 import PostPage from "./components/postPage/PostPage.jsx";
+import Page1 from "./pages/adPages/Page1.jsx";
 
 export default function App() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="/a/:slug/start" element={<ArticlePage1 />} />
           <Route path="/a/:slug/verify" element={<Page2 />} />
           <Route path="/a/:slug/complete" element={<Page3 />} />
+          <Route path="/a/:slug/p1" element={<Page1 />} />
         </Routes>
       </div>
       <Footer />

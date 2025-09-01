@@ -1,0 +1,18 @@
+.footer-section {
+  text-align: center;
+  padding: 20px;
+  border-top: 1px solid #eee;
+  margin-top: 20px;
+  font-size: 0.95rem;
+}
+
+.telegram-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 16px;
+  background: #0088cc;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+}

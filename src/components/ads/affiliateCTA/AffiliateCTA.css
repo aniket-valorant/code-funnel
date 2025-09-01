@@ -1,0 +1,29 @@
+.affiliate-cta {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.affiliate-cta.red {
+  background-color: #e53935;
+}
+
+.affiliate-cta.red:hover {
+  background-color: #c62828;
+}
+
+.affiliate-cta.green {
+  background-color: #43a047;
+}
+
+.affiliate-cta.green:hover {
+  background-color: #2e7d32;
+}
