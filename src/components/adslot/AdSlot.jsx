@@ -2,13 +2,16 @@ import { useEffect, useRef } from "react";
 
 const AdSlot = ({ id, keyId, width, height, onLoad }) => {
   const containerRef = useRef(null);
+  const loadedRef = useRef(false); // track if ad is already loaded
 
   const loadAd = () => {
     return new Promise((resolve) => {
+      if (loadedRef.current) return resolve(); // prevent re-loading
       const container = containerRef.current;
       if (!container) return resolve();
 
-      container.innerHTML = ""; // clear previous content
+      // clear previous content (optional, only if you want to refresh)
+      container.innerHTML = "";
 
       // Inline options script
       const inlineScript = document.createElement("script");
@@ -26,11 +29,13 @@ const AdSlot = ({ id, keyId, width, height, onLoad }) => {
       // External ad script
       const externalScript = document.createElement("script");
       externalScript.type = "text/javascript";
-      // externalScript.src = "//www.highperformanceformat.com/" + keyId + "/invoke.js";
       externalScript.src = "//eminencehillsidenutrition.com/" + keyId + "/invoke.js";
 
-      // Resolve promise on load or after 2 seconds fallback
-      externalScript.onload = () => resolve();
+      // Resolve promise on load or fallback
+      externalScript.onload = () => {
+        loadedRef.current = true; // mark as loaded
+        resolve();
+      };
       externalScript.onerror = () => resolve(); 
       setTimeout(() => resolve(), 2000);
 
@@ -43,7 +48,7 @@ const AdSlot = ({ id, keyId, width, height, onLoad }) => {
     if (onLoad) onLoad(loadAd);
   }, [keyId, width, height, onLoad]);
 
-  return <div id={id} ref={containerRef} />;
+  return <div id={id} ref={containerRef} style={{ width, height }} />;
 };
 
 export default AdSlot;

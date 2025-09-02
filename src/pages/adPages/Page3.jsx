@@ -33,13 +33,14 @@ useEffect(() => {
   
 
   useEffect(() => {
-    const runQueue = async () => {
-      for (const loadAdFn of adQueueRef.current) {
-        await loadAdFn();
-      }
-    };
-    runQueue();
-  }, []);
+  const runQueue = async () => {
+    for (const loadAdFn of adQueueRef.current) {
+      await loadAdFn();
+    }
+  };
+  runQueue();
+}, []);
+
 
 const copyCode = () => {
     navigator.clipboard.writeText("xyz");

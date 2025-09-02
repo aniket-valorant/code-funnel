@@ -28,13 +28,14 @@ const Page1 = () => {
   };
 
   useEffect(() => {
-    const runQueue = async () => {
-      for (const loadAdFn of adQueueRef.current) {
-        await loadAdFn();
-      }
-    };
-    runQueue();
-  }, []);
+  const runQueue = async () => {
+    for (const loadAdFn of adQueueRef.current) {
+      await loadAdFn();
+    }
+  };
+  runQueue();
+}, []);
+
 
   useEffect(() => {
     setShowCountdown(true);

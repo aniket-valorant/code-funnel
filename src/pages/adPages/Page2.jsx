@@ -31,13 +31,14 @@ const Page2 = () => {
   }, [countdown]);
 
   useEffect(() => {
-    const runQueue = async () => {
-      for (const loadAdFn of adQueueRef.current) {
-        await loadAdFn();
-      }
-    };
-    runQueue();
-  }, []);
+  const runQueue = async () => {
+    for (const loadAdFn of adQueueRef.current) {
+      await loadAdFn();
+    }
+  };
+  runQueue();
+}, []);
+
 
   return (
     <div className="page-container">
