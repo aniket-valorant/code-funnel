@@ -5,9 +5,13 @@ import AffiliateButton from "../../components/ads/affiliateButton/AffiliateButto
 import SocialBarAd from "../../components/ads/SocialBar";
 import FooterSection from "../../components/ads/footerSection/FooterSection";
 import AdSlot from "../../components/adslot/AdSlot";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
 import './style/Page3.css'
+import { usePageProgress } from "../../context/PageProgressProvider";
 const Page3 = () => {
+  const navigate = useNavigate();
+  const { page1Completed, page2Completed } = usePageProgress();
   const { slug } = useParams();
   const bannerKey = "c2b2533e7be1f40efc683cff33e98ae7"; // 300x50
   const inlineKey = "f0fb375a70e618a337898e0611ab95dd"; // 300x250
@@ -15,6 +19,13 @@ const Page3 = () => {
     const [countdown, setCountdown] = useState(8); // 8 sec countdown
   const [showCode, setShowCode] = useState(false);
 
+
+useEffect(() => {
+  if (!page1Completed || !page2Completed) {
+    alert("You must complete previous pages first!");
+    navigate(`/a/${slug}/p1`);
+  }
+}, [page1Completed, page2Completed, navigate, slug]);
 
 useEffect(() => {
     if (countdown <= 0) {

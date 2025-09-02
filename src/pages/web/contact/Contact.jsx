@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./Contact.css";
-import { sendContactMessage } from "../../../api";
+import { sendContactMessage } from "../../../utils/api";
 
 export default function Contact() {
   const [formData, setFormData] = useState({

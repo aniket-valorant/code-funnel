@@ -9,8 +9,10 @@ import FooterSection from "../../components/ads/footerSection/FooterSection";
 import { useNavigate, useParams } from "react-router-dom";
 import AdSlot from "../../components/adslot/AdSlot";
 import "./style/Page2.css"
+import { usePageProgress } from "../../context/PageProgressProvider";
 
 const Page2 = () => {
+  const {page1Completed, setPage2Completed} = usePageProgress();
   const bannerKey = "c2b2533e7be1f40efc683cff33e98ae7"; // 300x50
   const inlineKey = "f0fb375a70e618a337898e0611ab95dd"; // 300x250
   const [countdown, setCountdown] = useState(8);
@@ -18,6 +20,12 @@ const Page2 = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const adQueueRef = useRef([]);
+
+  const handleReveal = () => {
+    setPage2Completed(true);
+    navigate(`/a/${slug}/p3`);
+  }
+
   const enqueueAd = (loadFn) => {
     adQueueRef.current.push(loadFn);
   };
@@ -38,6 +46,13 @@ const Page2 = () => {
   };
   runQueue();
 }, []);
+
+useEffect(() => {
+  if (!page1Completed ) {
+    alert("You must complete previous pages first!");
+    navigate(`/a/${slug}/p1`);
+  }
+}, [page1Completed, navigate, slug]);
 
 
   return (
@@ -119,7 +134,7 @@ const Page2 = () => {
         <div className="ad-center next-btn-container" style={{ marginTop: "40px" }}>
           <button
             className="next-page-btn"
-            onClick={() => navigate(`/a/${slug}/p3`)}
+            onClick={handleReveal}
           >
             Reveal code
           </button>

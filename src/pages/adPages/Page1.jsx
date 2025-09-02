@@ -12,6 +12,7 @@ import InlineAd from "../../components/ads/InlineAd";
 import FooterSection from "../../components/ads/footerSection/FooterSection";
 import { useNavigate, useParams } from "react-router-dom";
 import AdSlot from "../../components/adslot/AdSlot";
+import { usePageProgress } from "../../context/PageProgressProvider";
 
 const Page1 = () => {
   const { slug } = useParams();
@@ -20,12 +21,18 @@ const Page1 = () => {
   const [showCountdown, setShowCountdown] = useState(false);
   const [countdown, setCountdown] = useState(10); // 10 seconds
   const [showNextButton, setShowNextButton] = useState(false);
+  const {setPage1Completed} = usePageProgress()
 
   const navigate = useNavigate();
   const adQueueRef = useRef([]);
   const enqueueAd = (loadFn) => {
     adQueueRef.current.push(loadFn);
   };
+
+  const handleContinue = () => {
+    setPage1Completed(true);
+    navigate(`/a/${slug}/p2`);
+  }
 
   useEffect(() => {
   const runQueue = async () => {
@@ -136,7 +143,7 @@ const Page1 = () => {
         <div className="ad-center next-btn-container">
           <button
             className="next-page-btn"
-            onClick={() => navigate(`/a/${slug}/p2`)}
+            onClick={handleContinue}
           >
             Continue
           </button>
