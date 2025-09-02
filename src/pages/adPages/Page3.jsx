@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import './style/Page3.css'
 import { usePageProgress } from "../../context/PageProgressProvider";
+import { api } from "../../utils/api";
 const Page3 = () => {
   const navigate = useNavigate();
   const { page1Completed, page2Completed } = usePageProgress();
@@ -16,8 +17,10 @@ const Page3 = () => {
   const bannerKey = "c2b2533e7be1f40efc683cff33e98ae7"; // 300x50
   const inlineKey = "f0fb375a70e618a337898e0611ab95dd"; // 300x250
 
-    const [countdown, setCountdown] = useState(8); // 8 sec countdown
+  const [started, setStarted] = useState(false);
+    const [countdown, setCountdown] = useState(6); // 6 sec countdown
   const [showCode, setShowCode] = useState(false);
+  const [codeData, setCodeData] = useState(null)
 
 
 useEffect(() => {
@@ -27,14 +30,29 @@ useEffect(() => {
   }
 }, [page1Completed, page2Completed, navigate, slug]);
 
-useEffect(() => {
+  useEffect(() => {
+    if (!started) return;
     if (countdown <= 0) {
       setShowCode(true);
       return;
     }
-    const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+    const timer = setTimeout(() => setCountdown((prev) => prev - 1), 1000);
     return () => clearTimeout(timer);
-  }, [countdown]);
+  }, [countdown, started]);
+
+  useEffect(() => {
+  const fetchCode = async () => {
+    try {
+      const res = await api.get(`/code/${slug}`); // endpoint returns { code, imageUrl, slug }
+      setCodeData(res.data);
+    } catch (err) {
+      console.error("Failed to fetch code:", err);
+      alert("Failed to load your code. Try again later.");
+    }
+  };
+
+  fetchCode();
+}, [slug]);
 
 
   const adQueueRef = useRef([]);
@@ -58,6 +76,15 @@ const copyCode = () => {
     alert("Code copied to clipboard!");
   };
 
+  if (!codeData) {
+  return (
+    <div className="page-container">
+      <p style={{ textAlign: "center", marginTop: "50px" }}>Loading your code...</p>
+    </div>
+  );
+}
+
+
   return (
     <div className="page-container">
       <div className="ad-center">
@@ -74,9 +101,19 @@ const copyCode = () => {
       <header className="hero-section">
         <h1 className="site-title">🎉 Congratulations!</h1>
         <p className="headline">
-          Your code for {slug} is almost ready!
+          You’ve reached the <strong>final page</strong>.  
+          Your code is just one click away!
         </p>
       </header>
+
+      {/* Unlock Button */}
+      {!started && (
+        <div className="ad-center">
+          <button className="unlock-btn" onClick={() => setStarted(true)}>
+            🔓 Unlock My Code
+          </button>
+        </div>
+      )}
 
       {/* Popunder Trigger */}
       <PopunderTrigger scriptUrl="//eminencehillsidenutrition.com/60/64/83/60648330d5724422f8d3884cae900cd4.js" />
@@ -88,23 +125,12 @@ const copyCode = () => {
         color="red"
       />
 
-      {/* Countdown / Code Reveal */}
-      {!showCode ? (
-        <div className="ad-center countdown-container">
-          <p className="hint-text">
-            ⏳ Preparing your code... {countdown} sec
-          </p>
-        </div>
-      ) : (
-        <div className="ad-center code-container">
-          <p className="hint-text">✅ Here is your unlocked code:</p>
-          <pre className="code-box">xyz123</pre>
-          <button className="copy-btn" onClick={copyCode}>
-            📋 Copy Code
-          </button>
+      {/* Countdown */}
+      {started && !showCode && (
+        <div className="countdown-container">
+          <p className="hint-text">⏳ Please wait... {countdown} sec</p>
         </div>
       )}
-
 
       {/* Inline Ads */}
       <div className="ad-center">
@@ -127,15 +153,27 @@ const copyCode = () => {
         color="green"
       />
 
-      {/* Banner Ad */}
+      {showCode && (
+        <div className="code-section">
+          <p className="scroll-text">👇 Scroll down to view your code 👇</p>
+
+          <div className="code-card">
+            <img
+              src={codeData.imageUrl}
+              alt="Unlocked code"
+              className="code-image"
+            />
+            <h3>{slug}</h3>
+            <pre className="code-box">{codeData.code}</pre>
+            <button className="copy-btn" onClick={copyCode}>
+              📋 Copy Code
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Fake Comments */}
-      <section className="comments-section">
-        <h3>Recent Feedback</h3>
-        <div className="comment">🔥 Works 100%, I unlocked it in 2 mins!</div>
-        <div className="comment">Wow, real link finally 😍</div>
-        <div className="comment">Thanks bro 🙏 this is legit</div>
-      </section>
+      
 
       <div className="ad-center">
         <AdSlot
@@ -158,6 +196,12 @@ const copyCode = () => {
           onLoad={enqueueAd}
         />
       </div>
+      <section className="comments-section">
+        <h3>Recent Feedback</h3>
+        <div className="comment">🔥 Works 100%, I unlocked it in 2 mins!</div>
+        <div className="comment">Wow, real link finally 😍</div>
+        <div className="comment">Thanks bro 🙏 this is legit</div>
+      </section>
     </div>
   );
 };

@@ -8,20 +8,23 @@ import NativeBannerAd from "../../components/ads/NativeBanner";
 import AffiliateButton from "../../components/ads/affiliateButton/AffiliateButton";
 import SocialBarAd from "../../components/ads/SocialBar";
 import ContentSection from "../../components/ads/contentSection/ContentSection";
-import InlineAd from "../../components/ads/InlineAd";
 import FooterSection from "../../components/ads/footerSection/FooterSection";
 import { useNavigate, useParams } from "react-router-dom";
 import AdSlot from "../../components/adslot/AdSlot";
 import { usePageProgress } from "../../context/PageProgressProvider";
+import { api } from "../../utils/api";
 
 const Page1 = () => {
   const { slug } = useParams();
+  const [data, setData] = useState(null);
+
   const bannerKey = "c2b2533e7be1f40efc683cff33e98ae7"; // 300x50
   const inlineKey = "f0fb375a70e618a337898e0611ab95dd"; // 300x250
   const [showCountdown, setShowCountdown] = useState(false);
-  const [countdown, setCountdown] = useState(10); // 10 seconds
+  const [started, setStarted] = useState(false);
+  const [countdown, setCountdown] = useState(6); // 6 seconds
   const [showNextButton, setShowNextButton] = useState(false);
-  const {setPage1Completed} = usePageProgress()
+  const { setPage1Completed } = usePageProgress();
 
   const navigate = useNavigate();
   const adQueueRef = useRef([]);
@@ -29,35 +32,40 @@ const Page1 = () => {
     adQueueRef.current.push(loadFn);
   };
 
+  useEffect(() => {
+    api.get(`/code/${slug}`).then((res) => setData(res.data));
+  }, [slug]);
+
+  const handleStart = () => {
+    setStarted(true);
+    setShowCountdown(true);
+  };
   const handleContinue = () => {
     setPage1Completed(true);
     navigate(`/a/${slug}/p2`);
-  }
-
-  useEffect(() => {
-  const runQueue = async () => {
-    for (const loadAdFn of adQueueRef.current) {
-      await loadAdFn();
-    }
   };
-  runQueue();
-}, []);
-
 
   useEffect(() => {
-    setShowCountdown(true);
+    const runQueue = async () => {
+      for (const loadAdFn of adQueueRef.current) {
+        await loadAdFn();
+      }
+    };
+    runQueue();
   }, []);
 
   // Countdown logic
   useEffect(() => {
-    if (!showCountdown) return;
+    if (!started || !showCountdown) return;
     if (countdown <= 0) {
       setShowNextButton(true);
       return;
     }
-    const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+    const timer = setTimeout(() => setCountdown((c) => c - 1), 1000);
     return () => clearTimeout(timer);
-  }, [countdown, showCountdown]);
+  }, [countdown, showCountdown, started]);
+
+  if (!data) return <p>Loading...</p>;
 
   return (
     <div className="page-container">
@@ -78,23 +86,32 @@ const Page1 = () => {
 
       {/* Native Banner Ad */}
 
-      {/* First Affiliate Button */}
-      <AffiliateButton
-        url="https://eminencehillsidenutrition.com/z8a10cpf5?key=c6681c0d5e96aeb1d238fd5b1ce90c3c"
-        text="🔴 Get Full Video Here"
-        color="red"
-      />
-
       {/* Floating Social Bar */}
       <SocialBarAd scriptUrl="//eminencehillsidenutrition.com/2f/35/fe/2f35fe3a9f53f6870367fd1f1f5f70e9.js" />
       {/* Content with blurred thumbnail */}
-      <ContentSection previewImg="/assets/video-preview.jpg" />
+
+      <img src={data.imageUrl} alt={data.slug} className="blurred" />
+      <p className="caption">Code for this video below 👇</p>
+
+      {/* First Affiliate Button */}
+      <AffiliateButton
+        url="https://eminencehillsidenutrition.com/z8a10cpf5?key=c6681c0d5e96aeb1d238fd5b1ce90c3c"
+        text="🔴 Watch Full Video Here"
+        color="red"
+      />
 
       {/* Countdown button placeholder below ContentSection */}
+      {!started && (
+        <div className="ad-center">
+          <button className="next-page-btn" onClick={handleStart}>
+            Unlock Code
+          </button>
+        </div>
+      )}
       {!showNextButton && showCountdown && (
         <div className="ad-center countdown-container">
           <button className="countdown-btn" disabled>
-            ⏳ Preparing your {slug} code... {countdown} sec
+            "⏳ Generating your {slug} code... please wait {countdown}s"
           </button>
         </div>
       )}
@@ -102,7 +119,7 @@ const Page1 = () => {
       {/* Hint text when next button is about to appear */}
       {showNextButton && (
         <div className="ad-center hint-text">
-          <p>✨ Your code is ready! Scroll down to continue →</p>
+          <p>✨ Your code is ready! Scroll down to Reveal code →</p>
         </div>
       )}
 
@@ -120,7 +137,7 @@ const Page1 = () => {
       {/* Secondary Affiliate Button */}
       <AffiliateButton
         url="https://eminencehillsidenutrition.com/ajhx1hak?key=18e4deb08a2f261c26fb60811c2ad8aa"
-        text="🟢 Unlock Full HD Video"
+        text="🟢 Unlock in HD Quality"
         color="green"
       />
 
@@ -137,15 +154,12 @@ const Page1 = () => {
 
       {/* Next Page Button above Footer */}
       <div className="ad-center hint-text">
-        <p>✨ To unlock {slug} code press continue</p>
+        <p>✨ To unlock {slug} code press Reveal Code</p>
       </div>
       {showNextButton && (
         <div className="ad-center next-btn-container">
-          <button
-            className="next-page-btn"
-            onClick={handleContinue}
-          >
-            Continue
+          <button className="next-page-btn" onClick={handleContinue}>
+            Reveal Code
           </button>
         </div>
       )}

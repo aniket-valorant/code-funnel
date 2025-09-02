@@ -1,54 +1,122 @@
+/* Centered ad slots / buttons */
+.page-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
 .ad-center {
   display: flex;
   justify-content: center;
-  margin: 20px 0; /* optional spacing */
+  align-items: center;
+  margin: 24px 0;
 }
 
-
-/* Countdown button below content */
+/* Countdown button */
 .countdown-container .countdown-btn {
-  padding: 14px 28px;
-  font-size: 16px;
-  background-color: #f39c12; /* orange */
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  opacity: 0.9;
-  cursor: not-allowed;
-  transition: opacity 0.3s ease;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-}
-
-/* Hint text styling */
-.hint-text p {
+  padding: 14px 32px;
   font-size: 16px;
   font-weight: 500;
-  color: #2c3e50;
-  animation: fadeIn 1s ease forwards;
+  background: linear-gradient(135deg, #f39c12, #f1c40f);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  opacity: 0.95;
+  cursor: not-allowed;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  letter-spacing: 0.5px;
 }
 
-/* Next Page button above footer */
+.countdown-container .countdown-btn:active {
+  transform: scale(0.98);
+}
+
+/* Hint text */
+.hint-text p {
+  font-size: 17px;
+  font-weight: 600;
+  color: #2c3e50;
+  text-align: center;
+  margin: 10px 0;
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+/* Next Page button */
 .next-btn-container .next-page-btn {
-  padding: 16px 32px;
+  padding: 16px 36px;
   font-size: 18px;
   font-weight: bold;
   background: linear-gradient(90deg, #ff416c, #ff4b2b);
   color: #fff;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  letter-spacing: 0.5px;
 }
 
-/* Hover effect for next page button */
-.next-btn-container .next-page-btn:hover {
+/* Unlock Code button */
+.next-page-btn {
+  padding: 16px 32px;
+  font-size: 18px;
+  font-weight: 600;
+  background: linear-gradient(90deg, #4facfe, #00f2fe); /* Blue gradient */
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+}
+
+/* Hover effect */
+.next-page-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+  background: linear-gradient(90deg, #43e97b, #38f9d7); /* Green gradient */
 }
 
-/* Optional: fade-in animation for hint text */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+/* Active (when clicking) */
+.next-page-btn:active {
+  transform: scale(0.96);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+}
+
+
+.next-btn-container .next-page-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.35);
+}
+
+.next-btn-container .next-page-btn:active {
+  transform: scale(0.97);
+}
+
+.blurred {
+  width: 60%;
+  max-height: 350px;
+  filter: blur(12px);
+  border-radius: 12px;
+  transition: filter 0.5s ease;
+  margin-bottom: 30px;
+}
+
+/* Fade-in animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  .countdown-container .countdown-btn,
+  .next-btn-container .next-page-btn {
+    font-size: 15px;
+    padding: 12px 24px;
+  }
+  
+  .hint-text p {
+    font-size: 15px;
+  }
 }

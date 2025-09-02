@@ -1,4 +1,10 @@
 /* Countdown hint text */
+
+.page-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
 .countdown-container .hint-text {
   font-size: 18px;
   color: #2c3e50;
@@ -32,6 +38,11 @@
   color: #2c3e50;
   margin-bottom: 12px;
   text-align: center;
+}
+
+.unblurred {
+  width: 60%;
+  border-radius: 12px;
 }
 
 /* Fade-in animation */
