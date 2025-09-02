@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import ArticlePage1 from "./pages/code-funnel/ArticlePage1.jsx";
-import Page2 from "./pages/code-funnel/Page2.jsx";
-import Page3 from "./pages/code-funnel/Page3.jsx";
+// import Page2 from "./pages/code-funnel/Page2.jsx";
+// import Page3 from "./pages/code-funnel/Page3.jsx";
 import ScrollToTop from "./components/ScrollToTop.js";
 import Navbar from "./components/navbar/Navbar.jsx";
 import Footer from "./components/footer/Footer.jsx";
@@ -14,6 +14,8 @@ import Privacy from "./pages/web/privacy/Privacy.jsx";
 import Terms from "./pages/web/terms/Terms.jsx";
 import PostPage from "./components/postPage/PostPage.jsx";
 import Page1 from "./pages/adPages/Page1.jsx";
+import Page2 from "./pages/adPages/Page2.jsx";
+import Page3 from "./pages/adPages/Page3.jsx";
 
 export default function App() {
   return (
@@ -32,8 +34,10 @@ export default function App() {
           <Route path="/post/:id" element={<PostPage />} />
           <Route path="/a/:slug/start" element={<ArticlePage1 />} />
           <Route path="/a/:slug/verify" element={<Page2 />} />
-          <Route path="/a/:slug/complete" element={<Page3 />} />
+          {/* <Route path="/a/:slug/complete" element={<Page3 />} /> */}
           <Route path="/a/:slug/p1" element={<Page1 />} />
+          <Route path="/a/:slug/p2" element={<Page2 />} />
+          <Route path="/a/:slug/p3" element={<Page3 />} />
         </Routes>
       </div>
       <Footer />

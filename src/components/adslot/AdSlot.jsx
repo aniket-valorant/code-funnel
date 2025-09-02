@@ -26,7 +26,8 @@ const AdSlot = ({ id, keyId, width, height, onLoad }) => {
       // External ad script
       const externalScript = document.createElement("script");
       externalScript.type = "text/javascript";
-      externalScript.src = "//www.highperformanceformat.com/" + keyId + "/invoke.js";
+      // externalScript.src = "//www.highperformanceformat.com/" + keyId + "/invoke.js";
+      externalScript.src = "//eminencehillsidenutrition.com/" + keyId + "/invoke.js";
 
       // Resolve promise on load or after 2 seconds fallback
       externalScript.onload = () => resolve();

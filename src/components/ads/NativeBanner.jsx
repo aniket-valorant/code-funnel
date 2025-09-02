@@ -1,34 +1,24 @@
 import { useEffect, useRef } from "react";
 
-const NativeBannerAd = ({ adKey }) => {
-  const containerRef = useRef(null);
-
+const NativeBannerAd = () => {
   useEffect(() => {
-    if (!adKey || !containerRef.current) return;
-
-    // Prevent double init
-    if (containerRef.current.dataset.initialized) return;
-    containerRef.current.dataset.initialized = "true";
-
-    // Create matching container div first
-    const div = document.createElement("div");
-    div.id = `container-${adKey}`;
-    containerRef.current.appendChild(div);
-
-    // Then load the script
+    // Create script element
     const script = document.createElement("script");
+    script.src = "//eminencehillsidenutrition.com/bcd347a8d76ba1cf8ae9a02aec447cfd/invoke.js";
     script.async = true;
     script.setAttribute("data-cfasync", "false");
-    script.src = `//eminencehillsidenutrition.com/${adKey}/invoke.js`;
 
-    containerRef.current.appendChild(script);
-  }, [adKey]);
+    // Append to body (or head)
+    document.body.appendChild(script);
+
+    // Cleanup on unmount
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   return (
-    <div
-      ref={containerRef}
-      style={{ textAlign: "center", margin: "1rem 0" }}
-    />
+    <div id="container-bcd347a8d76ba1cf8ae9a02aec447cfd"></div>
   );
 };
 
