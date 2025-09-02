@@ -8,7 +8,7 @@ import SocialBarAd from "../../components/ads/SocialBar";
 import FooterSection from "../../components/ads/footerSection/FooterSection";
 import { useNavigate, useParams } from "react-router-dom";
 import AdSlot from "../../components/adslot/AdSlot";
-import "./page2Style.css"
+import "./style/Page2.css"
 
 const Page2 = () => {
   const bannerKey = "c2b2533e7be1f40efc683cff33e98ae7"; // 300x50

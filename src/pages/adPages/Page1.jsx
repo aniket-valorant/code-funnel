@@ -1,5 +1,5 @@
 // pages/Page1.jsx
-import "./Style.css";
+import "./style/Style.css";
 import React, { useEffect, useRef, useState } from "react";
 // Components
 import HeroSection from "../../components/ads/heroSection/HeroSection";
