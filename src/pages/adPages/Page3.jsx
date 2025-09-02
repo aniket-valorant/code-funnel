@@ -6,7 +6,6 @@ import SocialBarAd from "../../components/ads/SocialBar";
 import FooterSection from "../../components/ads/footerSection/FooterSection";
 import AdSlot from "../../components/adslot/AdSlot";
 import { useParams } from "react-router-dom";
-import "./Page3style.css"
 
 const Page3 = () => {
   const { slug } = useParams();
