@@ -1,46 +1,51 @@
 // src/components/CodeForm.jsx
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { useAuth } from "../../context/AuthProvider";
 import styles from "./CodeForm.module.css";
 import { api } from "../../utils/api";
 
 export default function CodeForm({ fetchCodes, editing, setEditing }) {
-  const { token } = useAuth();
+  const [uploading, setUploading] = useState(false);
   const [slug, setSlug] = useState("");
-  const [title, setTitle] = useState("");
   const [code, setCode] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [imagePublicId, setImagePublicId] = useState("");
 
   useEffect(() => {
     if (editing) {
       setSlug(editing.slug);
-      setTitle(editing.title);
       setCode(editing.code);
       setImageUrl(editing.imageUrl);
     } else {
-      setSlug(""); setTitle(""); setCode(""); setImageUrl("");
+      setSlug("");
+      setCode("");
+      setImageUrl("");
     }
   }, [editing]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (uploading) {
+      alert("Please wait until image upload is finished!");
+      return;
+    }
+    console.log(imagePublicId)
     try {
       if (editing) {
-        await api.put(`/code/${editing._id}`, 
-          { slug, title, code, imageUrl }
-        );
+        await api.put(`/code/${editing._id}`, { slug, code, imageUrl, imagePublicId });
       } else {
-        await api.post("/code",
-          { slug, title, code, imageUrl });
+        await api.post("/code", { slug, code, imageUrl, imagePublicId });
       }
       fetchCodes();
       setEditing(null);
-      setSlug(""); setTitle(""); setCode(""); setImageUrl("");
+      setSlug("");
+      setCode("");
+      setImageUrl("");
     } catch (err) {
       console.error(err.response?.data || err);
     }
   };
+  
 
   return (
     <div className={styles["code-form-container"]}>
@@ -52,27 +57,50 @@ export default function CodeForm({ fetchCodes, editing, setEditing }) {
           onChange={(e) => setSlug(e.target.value)}
           required
         />
-          <input
-            className={styles["code-input"]}
-            placeholder="Code"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            required
-          />
         <input
           className={styles["code-input"]}
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Code"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          required
         />
+        
         <input
           className={styles["code-input"]}
-          placeholder="Image URL"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
+          type="file"
+          accept="image/*"
+          onChange={async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("image", file);
+
+            setUploading(true);
+            try {
+              const res = await api.post("/upload", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+              });
+              setImageUrl(res.data.url);
+              setImagePublicId(res.data.public_id)
+            } catch (err) {
+              console.error(err);
+            } finally {
+              setUploading(false);
+            }
+          }}
         />
-        <button className={styles["code-submit-btn"]} type="submit">
-          {editing ? "Update" : "Add"} Code
+
+        {imageUrl && (
+          <img src={imageUrl} alt="Preview" className={styles["preview-img"]} />
+        )}
+
+        <button
+          className={styles["code-submit-btn"]}
+          type="submit"
+          disabled={uploading}
+        >
+          {uploading ? "Uploading..." : editing ? "Update" : "Add"} Code
         </button>
       </form>
     </div>

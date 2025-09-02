@@ -1,13 +1,12 @@
 // src/components/CodeList.jsx
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useAuth } from "../../context/AuthProvider";
 import CodeForm from "./CodeForm";
 import styles from "./CodeList.module.css";
 import { api } from "../../utils/api";
 
 export default function CodeList() {
-  const { token, logout } = useAuth();  // ✅ get logout
+  const { logout } = useAuth(); // ✅ get logout
   const [codes, setCodes] = useState([]);
   const [editing, setEditing] = useState(null);
 
@@ -30,6 +29,11 @@ export default function CodeList() {
     }
   };
 
+  const handleCopy = (slug) => {
+    const link = `https://hepptoblogs.vercel.app/a/${slug}/p1`;
+    navigator.clipboard.writeText(link);
+  };
+
   useEffect(() => {
     fetchCodes();
   }, []);
@@ -43,24 +47,47 @@ export default function CodeList() {
         </button>
       </div>
 
-      <CodeForm fetchCodes={fetchCodes} editing={editing} setEditing={setEditing} />
+      <CodeForm
+        fetchCodes={fetchCodes}
+        editing={editing}
+        setEditing={setEditing}
+      />
 
       <table className={styles["code-table"]}>
         <thead>
           <tr>
-            <th>Title</th>
+            <th>Image</th>
             <th>Slug</th>
             <th>Code</th>
+            <th>Copy</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {codes.map((code) => (
             <tr key={code._id}>
-              <td>{code.title}</td>
+              <td>
+                {code.imageUrl ? (
+                  <img
+                    src={code.imageUrl}
+                    alt={code.title}
+                    className={styles["table-thumb"]}
+                  />
+                ) : (
+                  <span>No image</span>
+                )}
+              </td>
               <td>{code.slug}</td>
               <td>
                 <pre className={styles["code-block"]}>{code.code}</pre>
+              </td>
+              <td>
+                <button
+                  className={styles["copy-button"]}
+                  onClick={() => handleCopy(code.slug)}
+                >
+                  Copy
+                </button>
               </td>
               <td className={styles["action-buttons"]}>
                 <button

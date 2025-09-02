@@ -49,6 +49,21 @@
   word-break: break-word;
 }
 
+.copy-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.copy-button:hover {
+  background-color: #45a049;
+}
+
+
 /* Buttons inside table */
 .action-buttons {
   display: flex;
@@ -102,4 +117,12 @@
 
 .logout-button:hover {
   background: #d62828;
+}
+
+.table-thumb {
+  width: 40px;   /* very small thumbnail */
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
