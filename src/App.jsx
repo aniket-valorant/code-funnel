@@ -17,9 +17,6 @@ import { PageProgressProvider } from "./context/PageProgressProvider.jsx";
 import { AuthProvider, useAuth } from "./context/AuthProvider.jsx";
 import Login from "./pages/admin/Login.jsx";
 import CodeList from "./pages/admin/CodeList.jsx";
-import { useEffect } from "react";
-import axios from "axios";
-import { api } from "./utils/api.js";
 
 const ProtectedRoute = ({ children }) => {
   const { token } = useAuth();
@@ -27,17 +24,6 @@ const ProtectedRoute = ({ children }) => {
 };
 
 export default function App() {
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      api.get("/keep-alive")
-        .then(() => console.log("Ping sent"))
-        .catch(err => console.error("Ping failed:", err));
-    }, 10 * 60 * 1000); // every 5 minutes
-
-    return () => clearInterval(interval);
-  }, []);
-
 
   return (
     <AuthProvider>

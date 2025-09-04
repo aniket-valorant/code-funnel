@@ -91,17 +91,17 @@ export default function CodeForm({ fetchCodes, editing, setEditing }) {
           }}
         />
 
-        {imageUrl && (
-          <img src={imageUrl} alt="Preview" className={styles["preview-img"]} />
-        )}
 
         <button
           className={styles["code-submit-btn"]}
           type="submit"
           disabled={uploading}
-        >
+          >
           {uploading ? "Uploading..." : editing ? "Update" : "Add"} Code
         </button>
+          {imageUrl && (
+            <img src={imageUrl} alt="Preview" className={styles["preview-img"]} />
+          )}
       </form>
     </div>
   );
