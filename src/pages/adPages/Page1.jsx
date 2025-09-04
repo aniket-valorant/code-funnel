@@ -1,5 +1,5 @@
 // pages/Page1.jsx
-import "./style/Style.css";
+import "./style/Page1.css";
 import React, { useEffect, useRef, useState } from "react";
 // Components
 import HeroSection from "../../components/ads/heroSection/HeroSection";
@@ -65,8 +65,6 @@ const Page1 = () => {
     return () => clearTimeout(timer);
   }, [countdown, showCountdown, started]);
 
-  if (!data) return <p>Loading...</p>;
-
   return (
     <div className="page-container">
       <div className="ad-center">
@@ -79,7 +77,6 @@ const Page1 = () => {
         />
       </div>
       {/* 🔝 Hero Section */}
-      <HeroSection />
 
       {/* Popunder Trigger – fires on first click */}
       <PopunderTrigger scriptUrl="//eminencehillsidenutrition.com/60/64/83/60648330d5724422f8d3884cae900cd4.js" />
@@ -90,9 +87,16 @@ const Page1 = () => {
       <SocialBarAd scriptUrl="//eminencehillsidenutrition.com/2f/35/fe/2f35fe3a9f53f6870367fd1f1f5f70e9.js" />
       {/* Content with blurred thumbnail */}
 
-      <img src={data.imageUrl} alt={data.slug} className="blurred" />
-      <p className="caption">Code for this video below 👇</p>
-
+      {!data ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          {/* Your Hero + API content */}
+          <HeroSection />
+          <img src={data.imageUrl} alt={data.slug} className="blurred" />
+          <p className="caption">Code for this video below 👇</p>
+        </>
+      )}
       {/* First Affiliate Button */}
       <AffiliateButton
         url="https://eminencehillsidenutrition.com/z8a10cpf5?key=c6681c0d5e96aeb1d238fd5b1ce90c3c"

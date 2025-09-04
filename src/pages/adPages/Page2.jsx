@@ -64,8 +64,6 @@ const Page2 = () => {
     }
   }, [page1Completed, navigate, slug]);
 
-  if (!data) return <p>Loading...</p>;
-
   return (
     <div className="page-container">
       <div className="ad-center">
@@ -87,16 +85,22 @@ const Page2 = () => {
       <PopunderTrigger scriptUrl="//eminencehillsidenutrition.com/60/64/83/60648330d5724422f8d3884cae900cd4.js" />
 
       {/* Affiliate Button */}
-      <AffiliateButton
-        url="https://eminencehillsidenutrition.com/z8a10cpf5?key=c6681c0d5e96aeb1d238fd5b1ce90c3c"
-        text="🔴 Instant Access Here"
-        color="red"
-      />
 
       {/* Content */}
-      <img src={data.imageUrl} alt={data.slug} className="unblurred" />
-      <p className="caption">Code for this video below 👇</p>
+      {!data ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          <img src={data.imageUrl} alt={data.slug} className="unblurred" />
+          <p className="caption">Code for this video below 👇</p>
+        </>
+      )}
 
+<AffiliateButton
+  url="https://eminencehillsidenutrition.com/z8a10cpf5?key=c6681c0d5e96aeb1d238fd5b1ce90c3c"
+  text="🔴 Instant Access Here"
+  color="red"
+/>
       {!started && (
         <div className="ad-center">
           <button className="next-page-btn" onClick={() => setStarted(true)}>
@@ -106,13 +110,12 @@ const Page2 = () => {
       )}
 
       {started && !showNextButton && (
-  <div className="ad-center countdown-container">
-    <p className="hint-text">
-      ✨ Your {slug} code is revealing... {countdown} sec
-    </p>
-  </div>
-)}
-
+        <div className="ad-center countdown-container">
+          <p className="hint-text">
+            ✨ Your {slug} code is revealing... {countdown} sec
+          </p>
+        </div>
+      )}
 
       {showNextButton && (
         <div className="ad-center countdown-container">

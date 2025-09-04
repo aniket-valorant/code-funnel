@@ -41,6 +41,8 @@
 }
 
 .unblurred {
+  /* width: 60%; */
+  max-height: 200px;
   width: 60%;
   border-radius: 12px;
 }

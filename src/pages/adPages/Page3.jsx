@@ -7,7 +7,7 @@ import FooterSection from "../../components/ads/footerSection/FooterSection";
 import AdSlot from "../../components/adslot/AdSlot";
 import { useNavigate, useParams } from "react-router-dom";
 
-import './style/Page3.css'
+import "./style/Page3.css";
 import { usePageProgress } from "../../context/PageProgressProvider";
 import { api } from "../../utils/api";
 const Page3 = () => {
@@ -18,17 +18,16 @@ const Page3 = () => {
   const inlineKey = "f0fb375a70e618a337898e0611ab95dd"; // 300x250
 
   const [started, setStarted] = useState(false);
-    const [countdown, setCountdown] = useState(6); // 6 sec countdown
+  const [countdown, setCountdown] = useState(6); // 6 sec countdown
   const [showCode, setShowCode] = useState(false);
-  const [codeData, setCodeData] = useState(null)
+  const [codeData, setCodeData] = useState(null);
 
-
-useEffect(() => {
-  if (!page1Completed || !page2Completed) {
-    alert("You must complete previous pages first!");
-    navigate(`/a/${slug}/p1`);
-  }
-}, [page1Completed, page2Completed, navigate, slug]);
+  useEffect(() => {
+    if (!page1Completed || !page2Completed) {
+      alert("You must complete previous pages first!");
+      navigate(`/a/${slug}/p1`);
+    }
+  }, [page1Completed, page2Completed, navigate, slug]);
 
   useEffect(() => {
     if (!started) return;
@@ -41,49 +40,37 @@ useEffect(() => {
   }, [countdown, started]);
 
   useEffect(() => {
-  const fetchCode = async () => {
-    try {
-      const res = await api.get(`/code/${slug}`); // endpoint returns { code, imageUrl, slug }
-      setCodeData(res.data);
-    } catch (err) {
-      console.error("Failed to fetch code:", err);
-      alert("Failed to load your code. Try again later.");
-    }
-  };
+    const fetchCode = async () => {
+      try {
+        const res = await api.get(`/code/${slug}`); // endpoint returns { code, imageUrl, slug }
+        setCodeData(res.data);
+      } catch (err) {
+        console.error("Failed to fetch code:", err);
+        alert("Failed to load your code. Try again later.");
+      }
+    };
 
-  fetchCode();
-}, [slug]);
-
+    fetchCode();
+  }, [slug]);
 
   const adQueueRef = useRef([]);
   const enqueueAd = (loadFn) => {
     adQueueRef.current.push(loadFn);
   };
-  
 
   useEffect(() => {
-  const runQueue = async () => {
-    for (const loadAdFn of adQueueRef.current) {
-      await loadAdFn();
-    }
-  };
-  runQueue();
-}, []);
+    const runQueue = async () => {
+      for (const loadAdFn of adQueueRef.current) {
+        await loadAdFn();
+      }
+    };
+    runQueue();
+  }, []);
 
-
-const copyCode = () => {
+  const copyCode = () => {
     navigator.clipboard.writeText("xyz");
     alert("Code copied to clipboard!");
   };
-
-  if (!codeData) {
-  return (
-    <div className="page-container">
-      <p style={{ textAlign: "center", marginTop: "50px" }}>Loading your code...</p>
-    </div>
-  );
-}
-
 
   return (
     <div className="page-container">
@@ -97,23 +84,31 @@ const copyCode = () => {
         />
       </div>
       {/* 🔝 Top Section */}
-       {/* Hero Section */}
+      {/* Hero Section */}
       <header className="hero-section">
         <h1 className="site-title">🎉 Congratulations!</h1>
         <p className="headline">
-          You’ve reached the <strong>final page</strong>.  
-          Your code is just one click away!
+          You’ve reached the <strong>final page</strong>. Your code is just one
+          click away!
         </p>
       </header>
 
-      {/* Unlock Button */}
-      {!started && (
-        <div className="ad-center">
-          <button className="unlock-btn" onClick={() => setStarted(true)}>
-            🔓 Unlock My Code
-          </button>
+      {!showCode && (
+        <div className="code-section">
+
+          <div className="code-card">
+            <h3>{slug}</h3>
+            <img
+              src={codeData?.imageUrl}
+              alt="Unlocked code"
+              className="code-image"
+            />
+          <p className="scroll-text">👇 Scroll down to Unlock code 👇</p>
+          </div>
         </div>
       )}
+
+      {/* Unlock Button */}
 
       {/* Popunder Trigger */}
       <PopunderTrigger scriptUrl="//eminencehillsidenutrition.com/60/64/83/60648330d5724422f8d3884cae900cd4.js" />
@@ -123,7 +118,20 @@ const copyCode = () => {
         url="https://eminencehillsidenutrition.com/z8a10cpf5?key=c6681c0d5e96aeb1d238fd5b1ce90c3c"
         text="🔴 Get Download / Full Access"
         color="red"
-      />
+        />
+
+        {!started && (
+          <div className="ad-center">
+            <button className="unlock-btn" onClick={() => setStarted(true)}>
+              🔓 Unlock My Code
+            </button>
+          </div>
+        )}
+        {showCode && (
+          <div className="code-section">
+            <p className="scroll-text">👇 Scroll down to view your code 👇</p>
+          </div>
+        )}
 
       {/* Countdown */}
       {started && !showCode && (
@@ -155,15 +163,13 @@ const copyCode = () => {
 
       {showCode && (
         <div className="code-section">
-          <p className="scroll-text">👇 Scroll down to view your code 👇</p>
-
           <div className="code-card">
+            <h3>{slug}</h3>
             <img
-              src={codeData.imageUrl}
+              src={codeData?.imageUrl}
               alt="Unlocked code"
               className="code-image"
             />
-            <h3>{slug}</h3>
             <pre className="code-box">{codeData.code}</pre>
             <button className="copy-btn" onClick={copyCode}>
               📋 Copy Code
@@ -173,7 +179,6 @@ const copyCode = () => {
       )}
 
       {/* Fake Comments */}
-      
 
       <div className="ad-center">
         <AdSlot
