@@ -95,7 +95,6 @@ const Page3 = () => {
 
       {!showCode && (
         <div className="code-section">
-
           <div className="code-card">
             <h3>{slug}</h3>
             <img
@@ -103,7 +102,7 @@ const Page3 = () => {
               alt="Unlocked code"
               className="code-image"
             />
-          <p className="scroll-text">👇 Scroll down to Unlock code 👇</p>
+            <p className="scroll-text">👇 Scroll down to Unlock code 👇</p>
           </div>
         </div>
       )}
@@ -118,20 +117,20 @@ const Page3 = () => {
         url="https://eminencehillsidenutrition.com/z8a10cpf5?key=c6681c0d5e96aeb1d238fd5b1ce90c3c"
         text="🔴 Get Download / Full Access"
         color="red"
-        />
+      />
 
-        {!started && (
-          <div className="ad-center">
-            <button className="unlock-btn" onClick={() => setStarted(true)}>
-              🔓 Unlock My Code
-            </button>
-          </div>
-        )}
-        {showCode && (
-          <div className="code-section">
-            <p className="scroll-text">👇 Scroll down to view your code 👇</p>
-          </div>
-        )}
+      {!started && (
+        <div className="ad-center">
+          <button className="unlock-btn" onClick={() => setStarted(true)}>
+            🔓 Unlock My Code
+          </button>
+        </div>
+      )}
+      {showCode && (
+        <div className="code-section">
+          <p className="scroll-text">👇 Scroll down to view your code 👇</p>
+        </div>
+      )}
 
       {/* Countdown */}
       {started && !showCode && (
@@ -192,7 +191,7 @@ const Page3 = () => {
 
       {/* Footer */}
       <FooterSection telegramUrl="https://t.me/yourchannel" />
-      <div className="ad-center">
+      <div className="ad-center sticky-bottom-banner">
         <AdSlot
           id="ad-bottom-banner"
           keyId={bannerKey}
@@ -203,9 +202,32 @@ const Page3 = () => {
       </div>
       <section className="comments-section">
         <h3>Recent Feedback</h3>
-        <div className="comment">🔥 Works 100%, I unlocked it in 2 mins!</div>
-        <div className="comment">Wow, real link finally 😍</div>
-        <div className="comment">Thanks bro 🙏 this is legit</div>
+        <div className="comment">
+          <img src="https://i.pravatar.cc/32?img=1" alt="User" />
+          <div className="comment-body">
+            <span className="username">Alex P.</span>
+            <span className="time">• 2h ago</span>
+            <p>🔥 Works perfectly, unlocked it in just 2 minutes!</p>
+          </div>
+        </div>
+
+        <div className="comment">
+          <img src="https://i.pravatar.cc/32?img=5" alt="User" />
+          <div className="comment-body">
+            <span className="username">Sophie L.</span>
+            <span className="time">• 5h ago</span>
+            <p>Wow, finally a real link 😍 thanks so much!</p>
+          </div>
+        </div>
+
+        <div className="comment">
+          <img src="https://i.pravatar.cc/32?img=8" alt="User" />
+          <div className="comment-body">
+            <span className="username">Rahul K.</span>
+            <span className="time">• 1d ago</span>
+            <p>Thanks bro 🙏 this is legit. Subscribed to your channel!</p>
+          </div>
+        </div>
       </section>
     </div>
   );

@@ -49,6 +49,6 @@ const AdSlot = ({ id, keyId, width, height, onLoad }) => {
   }, [keyId, width, height, onLoad]);
 
   return <div id={id} ref={containerRef} style={{ width, height }} />;
-};
+};  
 
 export default AdSlot;

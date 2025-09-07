@@ -103,6 +103,15 @@ const Page1 = () => {
         text="🔴 Watch Full Video Here"
         color="red"
       />
+      <div className="ad-center">
+        <AdSlot
+          id="ad-in-article-1"
+          keyId={inlineKey}
+          width={300}
+          height={250}
+          onLoad={enqueueAd}
+        />
+      </div>
 
       {/* Countdown button placeholder below ContentSection */}
       {!started && (
@@ -115,7 +124,7 @@ const Page1 = () => {
       {!showNextButton && showCountdown && (
         <div className="ad-center countdown-container">
           <button className="countdown-btn" disabled>
-            "⏳ Generating your {slug} code... please wait {countdown}s"
+            ⏳ {countdown}s
           </button>
         </div>
       )}
@@ -128,15 +137,6 @@ const Page1 = () => {
       )}
 
       {/* Inline Ads inside content */}
-      <div className="ad-center">
-        <AdSlot
-          id="ad-in-article-1"
-          keyId={inlineKey}
-          width={300}
-          height={250}
-          onLoad={enqueueAd}
-        />
-      </div>
 
       {/* Secondary Affiliate Button */}
       <AffiliateButton
@@ -170,6 +170,16 @@ const Page1 = () => {
 
       {/* Footer with Telegram CTA */}
       <FooterSection telegramUrl="https://t.me/yourchannel" />
+
+      <div className="ad-center sticky-bottom-banner">
+        <AdSlot
+          id="ad-bottom-banner"
+          keyId={bannerKey}
+          width={300}
+          height={50}
+          onLoad={enqueueAd}
+        />
+      </div>
     </div>
   );
 };

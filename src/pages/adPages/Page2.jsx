@@ -111,16 +111,16 @@ const Page2 = () => {
 
       {started && !showNextButton && (
         <div className="ad-center countdown-container">
-          <p className="hint-text">
-            ✨ Your {slug} code is revealing... {countdown} sec
-          </p>
+          <button className="countdown-btn" disabled>
+            ⏳ {countdown}s
+          </button>
         </div>
       )}
 
       {showNextButton && (
         <div className="ad-center countdown-container">
           <p className="hint-text">
-            ✨ Your {slug} code is revealed ✨Scroll down to Reveal Code button{" "}
+            ✨Scroll down to Reveal Code button{" "}
           </p>
         </div>
       )}
@@ -172,7 +172,7 @@ const Page2 = () => {
 
       {/* Footer */}
       <FooterSection telegramUrl="https://t.me/yourchannel" />
-      <div className="ad-center">
+      <div className="ad-center sticky-bottom-banner">
         <AdSlot
           id="ad-bottom-banner"
           keyId={bannerKey}

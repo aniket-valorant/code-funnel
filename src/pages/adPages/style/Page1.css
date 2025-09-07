@@ -13,19 +13,20 @@
 
 /* Countdown button */
 .countdown-container .countdown-btn {
-  padding: 14px 32px;
-  font-size: 16px;
-  font-weight: 500;
+  padding: 14px 28px; /* slightly narrower */
+  font-size: 20px;    /* bigger for the number */
+  font-weight: 600;
   background: linear-gradient(135deg, #f39c12, #f1c40f);
   color: #fff;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   opacity: 0.95;
   cursor: not-allowed;
   transition: transform 0.25s ease, opacity 0.25s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
   letter-spacing: 0.5px;
 }
+
 
 .countdown-container .countdown-btn:active {
   transform: scale(0.98);
@@ -33,13 +34,18 @@
 
 /* Hint text */
 .hint-text p {
-  font-size: 17px;
+  font-size: 18px;              /* Slightly larger for readability */
   font-weight: 600;
   color: #2c3e50;
   text-align: center;
-  margin: 10px 0;
+  margin: 12px 0;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.8); /* subtle highlight */
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   animation: fadeInUp 0.8s ease forwards;
 }
+
 
 /* Next Page button */
 .next-btn-container .next-page-btn {
@@ -102,10 +108,26 @@
   margin-bottom: 30px;
 }
 
+.sticky-bottom-banner {
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+  bottom: 0;
+  background: #fff; 
+  z-index: 999;
+  padding: 8px 0;
+}
+
+
 /* Fade-in animations */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive tweaks */

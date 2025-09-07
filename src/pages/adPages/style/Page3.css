@@ -46,16 +46,7 @@
   display: inline-block;
   animation: fadeInUp 1s ease;
 }
-.countdown-container .hint-text {
-  font-size: 18px;
-  font-weight: 600;
-  color: #2c3e50;
-  background: linear-gradient(90deg, #f6d365, #fda085);
-  padding: 12px 20px;
-  border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-  animation: pulse 1s infinite alternate;
-}
+
 
 /* ================= Code Section ================= */
 .code-section {
@@ -117,19 +108,54 @@
 .comments-section {
   margin: 40px auto;
   max-width: 700px;
-  background: #f9f9f9;
+  background: #fff;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
 }
+
 .comments-section h3 {
   font-size: 20px;
-  margin-bottom: 10px;
-  color: #34495e;
+  margin-bottom: 15px;
+  color: #2c3e50;
+  font-weight: 600;
 }
-.comments-section .comment {
-  margin-bottom: 8px;
-  font-size: 16px;
+
+.comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.comment img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.comment-body {
+  background: #f7f9fc;
+  padding: 10px 14px;
+  border-radius: 10px;
+  flex: 1;
+}
+
+.comment-body .username {
+  font-weight: 600;
+  color: #34495e;
+  margin-right: 8px;
+}
+
+.comment-body .time {
+  font-size: 13px;
+  color: #7f8c8d;
+}
+
+.comment-body p {
+  margin: 6px 0 0;
+  font-size: 15px;
+  line-height: 1.4;
   color: #2c3e50;
 }
 
