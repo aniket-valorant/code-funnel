@@ -102,6 +102,25 @@ export default function CodeList() {
                 >
                   Delete
                 </button>
+                <button
+                  className={styles["send-button"]}
+                  onClick={async () => {
+                    try {
+                       const res = await api.post(`/code/${code._id}/send`);
+                       console.log(res)
+                      if (res.data?.success) {
+                        alert("✅ Sent to Telegram!");
+                      } else {
+                      alert("❌ Failed to send");
+                      }
+                    } catch (err) {
+                      console.error(err.response?.data || err);
+                      alert("❌ Failed to send");
+                    }
+                  }}
+                >
+                  Telegram
+                </button>
               </td>
             </tr>
           ))}

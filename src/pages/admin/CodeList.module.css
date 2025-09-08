@@ -126,3 +126,21 @@
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
+
+
+.send-button {
+  background-color: #1df25d; /* Telegram-style blue */
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.send-button:hover {
+  background-color: #09a411;
+  transform: translateY(-1px);
+} 
+
