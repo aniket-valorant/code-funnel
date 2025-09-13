@@ -6,9 +6,10 @@ import styles from "./CodeList.module.css";
 import { api } from "../../utils/api";
 
 export default function CodeList() {
-  const { logout } = useAuth(); // ✅ get logout
+  const { logout } = useAuth();
   const [codes, setCodes] = useState([]);
   const [editing, setEditing] = useState(null);
+  const [loadingId, setLoadingId] = useState(null);
 
   const fetchCodes = async () => {
     try {
@@ -32,6 +33,32 @@ export default function CodeList() {
   const handleCopy = (slug) => {
     const link = `https://hepptoblogs.vercel.app/a/${slug}/p1`;
     navigator.clipboard.writeText(link);
+  };
+
+  // ✅ new reusable function
+  const handleTelegramSend = async (codeId, file) => {
+    const formData = new FormData();
+    if (file) {
+      formData.append("video", file);
+    }
+
+    setLoadingId(codeId);
+    try {
+      const res = await api.post(`/code/${codeId}/send`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        timeout: 60000,
+      });
+      if (res.data?.success) {
+        alert("✅ Sent to Telegram!");
+      } else {
+        alert("❌ Failed to send");
+      }
+    } catch (err) {
+      console.error(err.response?.data || err);
+      alert("❌ Failed to send");
+    } finally {
+      setLoadingId(null);
+    }
   };
 
   useEffect(() => {
@@ -59,7 +86,6 @@ export default function CodeList() {
             <th>Image</th>
             <th>Slug</th>
             <th>Code</th>
-            <th>Copy</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -81,14 +107,6 @@ export default function CodeList() {
               <td>
                 <pre className={styles["code-block"]}>{code.code}</pre>
               </td>
-              <td>
-                <button
-                  className={styles["copy-button"]}
-                  onClick={() => handleCopy(code.slug)}
-                >
-                  Copy
-                </button>
-              </td>
               <td className={styles["action-buttons"]}>
                 <button
                   className={styles["edit-button"]}
@@ -102,24 +120,28 @@ export default function CodeList() {
                 >
                   Delete
                 </button>
+
+                {/* Hidden file input */}
+                <input
+                  type="file"
+                  accept="video/*"
+                  style={{ display: "none" }}
+                  id={`file-input-${code._id}`}
+                  onChange={(e) =>
+                    handleTelegramSend(code._id, e.target.files[0])
+                  }
+                />
+
                 <button
-                  className={styles["send-button"]}
-                  onClick={async () => {
-                    try {
-                       const res = await api.post(`/code/${code._id}/send`);
-                       console.log(res)
-                      if (res.data?.success) {
-                        alert("✅ Sent to Telegram!");
-                      } else {
-                      alert("❌ Failed to send");
-                      }
-                    } catch (err) {
-                      console.error(err.response?.data || err);
-                      alert("❌ Failed to send");
-                    }
-                  }}
+                  className={`${styles["send-button"]} ${
+                    loadingId === code._id ? styles["loading"] : ""
+                  }`}
+                  disabled={loadingId === code._id}
+                  onClick={() =>
+                    document.getElementById(`file-input-${code._id}`).click()
+                  }
                 >
-                  Telegram
+                  {loadingId === code._id ? "Sending" : "Telegram"}
                 </button>
               </td>
             </tr>
