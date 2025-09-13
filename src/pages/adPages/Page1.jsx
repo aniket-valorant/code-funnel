@@ -76,17 +76,10 @@ const Page1 = () => {
           onLoad={enqueueAd}
         />
       </div>
-      {/* 🔝 Hero Section */}
-
-      {/* Popunder Trigger – fires on first click */}
-      <PopunderTrigger scriptUrl="//eminencehillsidenutrition.com/60/64/83/60648330d5724422f8d3884cae900cd4.js" />
-
-      {/* Native Banner Ad */}
-
-      {/* Floating Social Bar */}
+      
+       <PopunderTrigger scriptUrl="//eminencehillsidenutrition.com/60/64/83/60648330d5724422f8d3884cae900cd4.js" />
       <SocialBarAd scriptUrl="//eminencehillsidenutrition.com/2f/35/fe/2f35fe3a9f53f6870367fd1f1f5f70e9.js" />
-      {/* Content with blurred thumbnail */}
-
+      
       {!data ? (
         <p>Loading...</p>
       ) : (
