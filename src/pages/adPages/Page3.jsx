@@ -163,7 +163,7 @@ const Page3 = () => {
       {showCode && (
         <div className="code-section">
           <div className="code-card">
-            <h3>{slug}</h3>
+            <h3>Video - {slug}</h3>
             <img
               src={codeData?.imageUrl}
               alt="Unlocked code"

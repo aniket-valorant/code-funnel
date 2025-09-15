@@ -96,6 +96,27 @@ const Page1 = () => {
         text="🔴 Watch Full Video Here"
         color="red"
       />
+        {!started && (
+          <div className="ad-center">
+            <button className="next-page-btn" onClick={handleStart}>
+              Unlock Code
+            </button>
+          </div>
+        )}
+        {!showNextButton && showCountdown && (
+          <div className="ad-center countdown-container">
+            <button className="countdown-btn" disabled>
+              ⏳ {countdown}s
+            </button>
+          </div>
+        )}
+  
+        {/* Hint text when next button is about to appear */}
+        {showNextButton && (
+          <div className="ad-center hint-text">
+            <p>✨ Your code is ready! Scroll down to Reveal code →</p>
+          </div>
+        )}
       <div className="ad-center">
         <AdSlot
           id="ad-in-article-1"
@@ -107,27 +128,6 @@ const Page1 = () => {
       </div>
 
       {/* Countdown button placeholder below ContentSection */}
-      {!started && (
-        <div className="ad-center">
-          <button className="next-page-btn" onClick={handleStart}>
-            Unlock Code
-          </button>
-        </div>
-      )}
-      {!showNextButton && showCountdown && (
-        <div className="ad-center countdown-container">
-          <button className="countdown-btn" disabled>
-            ⏳ {countdown}s
-          </button>
-        </div>
-      )}
-
-      {/* Hint text when next button is about to appear */}
-      {showNextButton && (
-        <div className="ad-center hint-text">
-          <p>✨ Your code is ready! Scroll down to Reveal code →</p>
-        </div>
-      )}
 
       {/* Inline Ads inside content */}
 
@@ -139,15 +139,7 @@ const Page1 = () => {
       />
 
       {/* Last Inline Ad (after comments/fake engagement) */}
-      <div className="ad-center">
-        <AdSlot
-          id="ad-in-article-2"
-          keyId={inlineKey}
-          width={300}
-          height={250}
-          onLoad={enqueueAd}
-        />
-      </div>
+      
 
       {/* Next Page Button above Footer */}
       <div className="ad-center hint-text">
@@ -160,6 +152,15 @@ const Page1 = () => {
           </button>
         </div>
       )}
+      <div className="ad-center">
+        <AdSlot
+          id="ad-in-article-2"
+          keyId={inlineKey}
+          width={300}
+          height={250}
+          onLoad={enqueueAd}
+        />
+      </div>
 
       {/* Footer with Telegram CTA */}
       <FooterSection telegramUrl="https://t.me/yourchannel" />

@@ -77,7 +77,7 @@ const Page2 = () => {
       </div>
       {/* 🔝 Top Section */}
       <header className="hero-section">
-        <h1 className="site-title">{slug} code Site</h1>
+        <h1 className="site-title">Video - {slug} CODE One Step Away</h1>
         <p className="headline">Almost there 🔓</p>
       </header>
 
