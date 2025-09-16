@@ -104,7 +104,7 @@ export default function CodeList() {
                 )}
               </td>
               <td>{code.slug}</td>
-              <td>
+              <td className={styles["code-col"]}>
                 <pre className={styles["code-block"]}>{code.code}</pre>
               </td>
               <td className={styles["action-buttons"]}>

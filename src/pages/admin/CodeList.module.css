@@ -49,19 +49,25 @@
   word-break: break-word;
 }
 
-.copy-button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 6px 10px;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 12px;
+/* Limit Code column */
+.code-col {
+  max-width: 200px;   /* 👈 restrict width */
+  width: 200px;       /* keeps consistent column width */
+  overflow-x: auto;   /* horizontal scroll */
+  white-space: nowrap; /* prevent wrapping */
 }
 
-.copy-button:hover {
-  background-color: #45a049;
+/* keep monospace block tidy */
+.code-block {
+  margin: 0;
+  font-family: monospace;
+  background: #f4f4f4;
+  padding: 0.5rem;
+  border-radius: 6px;
+  overflow-x: auto;   
+  white-space: nowrap;
 }
+
 
 
 /* Buttons inside table */
