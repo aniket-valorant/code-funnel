@@ -96,7 +96,7 @@ const Page3 = () => {
       {!showCode && (
         <div className="code-section">
           <div className="code-card">
-            <h3>{slug}</h3>
+            <h3>Video-{slug}</h3>
             <img
               src={codeData?.imageUrl}
               alt="Unlocked code"
@@ -126,16 +126,16 @@ const Page3 = () => {
           </button>
         </div>
       )}
-      {showCode && (
-        <div className="code-section">
-          <p className="scroll-text">👇 Scroll down to view your code 👇</p>
-        </div>
-      )}
-
       {/* Countdown */}
       {started && !showCode && (
         <div className="countdown-container">
           <p className="hint-text">⏳ Please wait... {countdown} sec</p>
+        </div>
+      )}
+
+      {showCode && (
+        <div className="ad-center hint-text">
+          <p className="scroll-text">👇 Scroll down to view your code 👇</p>
         </div>
       )}
 
@@ -193,7 +193,6 @@ const Page3 = () => {
       )}
 
       {/* Fake Comments */}
-
 
       {/* Footer */}
       <FooterSection telegramUrl="https://t.me/yourchannel" />

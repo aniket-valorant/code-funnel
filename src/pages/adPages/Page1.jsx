@@ -141,7 +141,7 @@ const Page1 = () => {
       />
       {showNextButton && (
         <div className="ad-center hint-text">
-          <p>✨ To unlock {slug} code press Reveal Code</p>
+          <p>✨ To unlock Video - {slug} code press Reveal Code</p>
         </div>
       )}
       <AffiliateButton

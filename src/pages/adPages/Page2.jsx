@@ -163,7 +163,7 @@ const Page2 = () => {
 
       {showNextButton && (
         <p className="hint-text">
-          🚀 {slug} code is revealed Press Reveal Code button
+          🚀 Video - {slug} code is revealed Press Reveal Code button
         </p>
       )}
       {showNextButton && (
