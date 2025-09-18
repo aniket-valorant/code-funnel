@@ -22,7 +22,7 @@ const Page1 = () => {
   const inlineKey = "f0fb375a70e618a337898e0611ab95dd"; // 300x250
   const [showCountdown, setShowCountdown] = useState(false);
   const [started, setStarted] = useState(false);
-  const [countdown, setCountdown] = useState(6); // 6 seconds
+  const [countdown, setCountdown] = useState(8); // 8 seconds
   const [showNextButton, setShowNextButton] = useState(false);
   const { setPage1Completed } = usePageProgress();
 
@@ -87,7 +87,9 @@ const Page1 = () => {
           {/* Your Hero + API content */}
           <HeroSection />
           <img src={data.imageUrl} alt={data.slug} className="blurred" />
-          <p className="caption">Code for this video below 👇</p>
+          <div className="ad-center hint-text">
+            <p className="caption">Code for this video below 👇</p>
+          </div>
         </>
       )}
       {/* First Affiliate Button */}
@@ -137,21 +139,21 @@ const Page1 = () => {
         text="🟢 Unlock in HD Quality"
         color="green"
       />
+      {showNextButton && (
+        <div className="ad-center hint-text">
+          <p>✨ To unlock {slug} code press Reveal Code</p>
+        </div>
+      )}
+      <AffiliateButton
+        url="https://eminencehillsidenutrition.com/z8a10cpf5?key=c6681c0d5e96aeb1d238fd5b1ce90c3c"
+        text="🔴 Reveal Code Now"
+        color="red"
+      />
 
       {/* Last Inline Ad (after comments/fake engagement) */}
       
 
       {/* Next Page Button above Footer */}
-      <div className="ad-center hint-text">
-        <p>✨ To unlock {slug} code press Reveal Code</p>
-      </div>
-      {showNextButton && (
-        <div className="ad-center next-btn-container">
-          <button className="next-page-btn" onClick={handleContinue}>
-            Reveal Code
-          </button>
-        </div>
-      )}
       <div className="ad-center">
         <AdSlot
           id="ad-in-article-2"
@@ -161,6 +163,13 @@ const Page1 = () => {
           onLoad={enqueueAd}
         />
       </div>
+      {showNextButton && (
+        <div className="ad-center next-btn-container">
+          <button className="next-page-btn" onClick={handleContinue}>
+            Reveal Code
+          </button>
+        </div>
+      )}
 
       {/* Footer with Telegram CTA */}
       <FooterSection telegramUrl="https://t.me/yourchannel" />

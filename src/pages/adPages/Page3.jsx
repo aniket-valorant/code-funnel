@@ -68,7 +68,7 @@ const Page3 = () => {
   }, []);
 
   const copyCode = () => {
-    navigator.clipboard.writeText("xyz");
+    navigator.clipboard.writeText(codeData.code);
     alert("Code copied to clipboard!");
   };
 
@@ -159,6 +159,21 @@ const Page3 = () => {
         text="🟢 Final Step – Unlock Now"
         color="green"
       />
+      <AffiliateButton
+        url="https://eminencehillsidenutrition.com/z8a10cpf5?key=c6681c0d5e96aeb1d238fd5b1ce90c3c"
+        text="🔴 Code Revealed Click Here"
+        color="red"
+      />
+
+      <div className="ad-center">
+        <AdSlot
+          id="ad-in-article-2"
+          keyId={inlineKey}
+          width={300}
+          height={250}
+          onLoad={enqueueAd}
+        />
+      </div>
 
       {showCode && (
         <div className="code-section">
@@ -179,15 +194,6 @@ const Page3 = () => {
 
       {/* Fake Comments */}
 
-      <div className="ad-center">
-        <AdSlot
-          id="ad-in-article-2"
-          keyId={inlineKey}
-          width={300}
-          height={250}
-          onLoad={enqueueAd}
-        />
-      </div>
 
       {/* Footer */}
       <FooterSection telegramUrl="https://t.me/yourchannel" />

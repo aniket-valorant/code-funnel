@@ -1,107 +1,13 @@
+/* ---------------------------
+   Container & Layout
+--------------------------- */
 .code-list-container {
-  background: #fff;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-  overflow-x: auto;
-}
-
-.code-list-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1.25rem;
-  color: #333;
-}
-
-/* Table Styling */
-.code-table {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 0.95rem;
-}
-
-.code-table th,
-.code-table td {
-  border: 1px solid #ddd;
-  padding: 0.75rem;
-  text-align: left;
-}
-
-.code-table th {
-  background: #f1f1f1;
-  font-weight: 600;
-  color: #333;
-}
-
-.code-table tr:nth-child(even) {
-  background: #fafafa;
-}
-
-.code-block {
-  margin: 0;
-  font-family: monospace;
-  background: #f4f4f4;
-  padding: 0.5rem;
-  border-radius: 6px;
-  max-width: 350px;
-  overflow-x: auto;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-/* Limit Code column */
-.code-col {
-  max-width: 200px;   /* 👈 restrict width */
-  width: 200px;       /* keeps consistent column width */
-  overflow-x: auto;   /* horizontal scroll */
-  white-space: nowrap; /* prevent wrapping */
-}
-
-/* keep monospace block tidy */
-.code-block {
-  margin: 0;
-  font-family: monospace;
-  background: #f4f4f4;
-  padding: 0.5rem;
-  border-radius: 6px;
-  overflow-x: auto;   
-  white-space: nowrap;
-}
-
-
-
-/* Buttons inside table */
-.action-buttons {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.edit-button,
-.delete-button {
-  padding: 0.4rem 0.8rem;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.edit-button {
-  background-color: #007bff;
-  color: white;
-}
-
-.edit-button:hover {
-  background-color: #0056b3;
-}
-
-.delete-button {
-  background-color: #e74c3c;
-  color: white;
-}
-
-.delete-button:hover {
-  background-color: #c0392b;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
 .header {
@@ -111,76 +17,190 @@
   margin-bottom: 1rem;
 }
 
-.logout-button {
-  background: #e63946;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
+.code-list-title {
+  font-size: 1.5rem;
   font-weight: bold;
+  color: #333;
+}
+
+/* ---------------------------
+   Logout Button
+--------------------------- */
+.logout-button {
+  background: #f44336;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 .logout-button:hover {
-  background: #d62828;
+  background: #d32f2f;
+}
+
+/* ---------------------------
+   Table Styling
+--------------------------- */
+.code-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.code-table th,
+.code-table td {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  text-align: left;
+  vertical-align: top;
+}
+
+.code-table th {
+  background: #f4f4f4;
+  font-weight: bold;
+  color: #444;
 }
 
 .table-thumb {
-  width: 40px;   /* very small thumbnail */
-  height: 40px;
+  width: 80px;
+  height: 60px;
   object-fit: cover;
   border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
+.no-image {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+/* ---------------------------
+   Code Column
+--------------------------- */
+.code-col {
+  max-width: 300px;
+}
+
+.code-block {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* ---------------------------
+   Action Buttons
+--------------------------- */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.edit-button,
+.delete-button,
+.send-button {
+  padding: 0.4rem 0.75rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.edit-button {
+  background: #1976d2;
+  color: #fff;
+}
+.edit-button:hover {
+  background: #125a9c;
+}
+
+.delete-button {
+  background: #e53935;
+  color: #fff;
+}
+.delete-button:hover {
+  background: #c62828;
+}
 
 .send-button {
-  background: linear-gradient(135deg, #1dd75f, #0fa847);
+  background: #43a047;
   color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
 }
-
 .send-button:hover {
-  background: linear-gradient(135deg, #16c055, #09923c);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background: #2e7d32;
 }
 
-.send-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
-
-.send-button:disabled {
-  background: #b5b5b5;
+.send-button.loading {
+  opacity: 0.6;
   cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
 }
 
-/* Optional: small loading spinner */
-.send-button.loading::after {
-  content: "";
-  width: 14px;
-  height: 14px;
-  border: 2px solid #fff;
-  border-top: 2px solid transparent;
-  border-radius: 50%;
-  display: inline-block;
-  animation: spin 0.8s linear infinite;
+/* ---------------------------
+   Loader / End Message
+--------------------------- */
+.loader,
+.end-message {
+  text-align: center;
+  margin: 1rem 0;
+  font-size: 1rem;
+  color: #555;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+/* ---------------------------
+   Responsive Design
+--------------------------- */
+@media (max-width: 768px) {
+  .code-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .code-col {
+    max-width: 200px;
+  }
+
+  .table-thumb {
+    width: 60px;
+    height: 45px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .edit-button,
+  .delete-button,
+  .send-button {
+    width: 100%;
+    text-align: center;
+  }
 }
 
+@media (max-width: 480px) {
+  .code-list-title {
+    font-size: 1.2rem;
+  }
+
+  .logout-button {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .code-col {
+    max-width: 150px;
+    font-size: 0.8rem;
+  }
+
+  .code-block {
+    font-size: 0.8rem;
+    padding: 0.4rem;
+  }
+}

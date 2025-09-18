@@ -16,7 +16,7 @@ const Page2 = () => {
   const { page1Completed, setPage2Completed } = usePageProgress();
   const bannerKey = "c2b2533e7be1f40efc683cff33e98ae7"; // 300x50
   const inlineKey = "f0fb375a70e618a337898e0611ab95dd"; // 300x250
-  const [countdown, setCountdown] = useState(6);
+  const [countdown, setCountdown] = useState(8);
   const [started, setStarted] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
   const { slug } = useParams();
@@ -92,15 +92,17 @@ const Page2 = () => {
       ) : (
         <>
           <img src={data.imageUrl} alt={data.slug} className="unblurred" />
-          <p className="caption">Code for this video below 👇</p>
+          <div className="ad-center hint-text">
+            <p className="caption">Code for this video below 👇</p>
+          </div>
         </>
       )}
 
-<AffiliateButton
-  url="https://eminencehillsidenutrition.com/z8a10cpf5?key=c6681c0d5e96aeb1d238fd5b1ce90c3c"
-  text="🔴 Instant Access Here"
-  color="red"
-/>
+      <AffiliateButton
+        url="https://eminencehillsidenutrition.com/z8a10cpf5?key=c6681c0d5e96aeb1d238fd5b1ce90c3c"
+        text="🔴 Instant Access Here"
+        color="red"
+      />
       {!started && (
         <div className="ad-center">
           <button className="next-page-btn" onClick={() => setStarted(true)}>
@@ -119,9 +121,7 @@ const Page2 = () => {
 
       {showNextButton && (
         <div className="ad-center countdown-container">
-          <p className="hint-text">
-            ✨Scroll down to Reveal Code button{" "}
-          </p>
+          <p className="hint-text">✨Scroll down to Reveal Code button </p>
         </div>
       )}
 
@@ -146,6 +146,11 @@ const Page2 = () => {
         text="🟢 Continue to Full Video"
         color="green"
       />
+      <AffiliateButton
+        url="https://eminencehillsidenutrition.com/z8a10cpf5?key=c6681c0d5e96aeb1d238fd5b1ce90c3c"
+        text="🔴 Full HD Download"
+        color="red"
+      />
       <div className="ad-center">
         <AdSlot
           id="ad-in-article-2"
@@ -156,9 +161,11 @@ const Page2 = () => {
         />
       </div>
 
-      <p className="hint-text">
-        🚀 {slug} code is revealed Press Reveal Code button
-      </p>
+      {showNextButton && (
+        <p className="hint-text">
+          🚀 {slug} code is revealed Press Reveal Code button
+        </p>
+      )}
       {showNextButton && (
         <div
           className="ad-center next-btn-container"
