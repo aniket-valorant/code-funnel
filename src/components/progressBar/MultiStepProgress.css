@@ -1,0 +1,71 @@
+/* components/MultiStepProgress.css */
+.multi-step-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto;
+  max-width: 600px;
+  font-family: sans-serif;
+}
+
+.step-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex: 1;
+  text-align: center;
+  flex-direction: column;
+}
+
+.step-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-bottom: 6px;
+  transition: all 0.3s ease;
+}
+
+.step-circle.active {
+  border-color: #4caf50;
+  background: #4caf50;
+  color: white;
+}
+
+.step-circle.completed {
+  border-color: #4caf50;
+  background: #4caf50;
+  color: white;
+}
+
+.step-label {
+  font-size: 13px;
+  color: #777;
+  transition: color 0.3s ease;
+}
+
+.step-label.active {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.step-line {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: #ccc;
+  z-index: -1;
+}
+
+.step-line.completed {
+  background: #4caf50;
+}
+
+/* For smaller screens */

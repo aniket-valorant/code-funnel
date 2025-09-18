@@ -13,10 +13,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import AdSlot from "../../components/adslot/AdSlot";
 import { usePageProgress } from "../../context/PageProgressProvider";
 import { api } from "../../utils/api";
+import ProgressBar from "../../components/progressBar/ProgressBar";
+import MultiStepProgress from "../../components/progressBar/MultiStepProgress";
 
 const Page1 = () => {
   const { slug } = useParams();
   const [data, setData] = useState(null);
+  const { currentStep } = usePageProgress();
+  const steps = ["Verification", "Unlock", "Reveal Code"];
 
   const bannerKey = "c2b2533e7be1f40efc683cff33e98ae7"; // 300x50
   const inlineKey = "f0fb375a70e618a337898e0611ab95dd"; // 300x250
@@ -67,6 +71,13 @@ const Page1 = () => {
 
   return (
     <div className="page-container">
+      <ProgressBar 
+        step={currentStep}
+        totalSteps={3}
+      />
+      <MultiStepProgress 
+        steps={steps} currentStep={currentStep}
+      />
       <div className="ad-center">
         <AdSlot
           id="ad-top-banner"
