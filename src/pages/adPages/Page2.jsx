@@ -1,7 +1,6 @@
 // pages/Page2.jsx
 import React, { useEffect, useRef, useState } from "react";
 import PopunderTrigger from "../../components/ads/PopunderTrigger";
-import NativeBannerAd from "../../components/ads/NativeBanner";
 import AffiliateButton from "../../components/ads/affiliateButton/AffiliateButton";
 import ContentSection from "../../components/ads/contentSection/ContentSection";
 import SocialBarAd from "../../components/ads/SocialBar";

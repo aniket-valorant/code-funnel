@@ -17,6 +17,7 @@ import { PageProgressProvider } from "./context/PageProgressProvider.jsx";
 import { AuthProvider, useAuth } from "./context/AuthProvider.jsx";
 import Login from "./pages/admin/Login.jsx";
 import CodeList from "./pages/admin/CodeList.jsx";
+import AdsPage from "./pages/adPages/AdsPage.jsx";
 
 const ProtectedRoute = ({ children }) => {
   const { token } = useAuth();
@@ -45,6 +46,7 @@ export default function App() {
               <Route path="/a/:slug/p2" element={<Page2 />} />
               <Route path="/a/:slug/p3" element={<Page3 />} />
               <Route path="/admin/login" element={<Login />} />
+              <Route path="/test" element={<AdsPage />} />
               <Route path="/admin/dashboard" element={
                 <ProtectedRoute>
                   <CodeList />

@@ -4,10 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 // Components
 import HeroSection from "../../components/ads/heroSection/HeroSection";
 import PopunderTrigger from "../../components/ads/PopunderTrigger";
-import NativeBannerAd from "../../components/ads/NativeBanner";
 import AffiliateButton from "../../components/ads/affiliateButton/AffiliateButton";
 import SocialBarAd from "../../components/ads/SocialBar";
-import ContentSection from "../../components/ads/contentSection/ContentSection";
 import FooterSection from "../../components/ads/footerSection/FooterSection";
 import { useNavigate, useParams } from "react-router-dom";
 import AdSlot from "../../components/adslot/AdSlot";
